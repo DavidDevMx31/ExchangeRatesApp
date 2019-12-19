@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5B23AB19BE0037A21B /* SettingsModel.swift */; };
+		B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */; };
+		B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */; };
 		B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49340D923A9DD2C00CFAB6A /* AppDelegate.swift */; };
 		B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49340DB23A9DD2C00CFAB6A /* SceneDelegate.swift */; };
 		B49340E123A9DD2C00CFAB6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49340DF23A9DD2C00CFAB6A /* Main.storyboard */; };
@@ -16,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B4487D5B23AB19BE0037A21B /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
+		B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsConstants.swift; sourceTree = "<group>"; };
 		B49340D623A9DD2C00CFAB6A /* Exchange_Rates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exchange_Rates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B49340D923A9DD2C00CFAB6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B49340DB23A9DD2C00CFAB6A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +43,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B4487D5F23AB1F660037A21B /* Business */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Business;
+			sourceTree = "<group>";
+		};
+		B4487D6023AB1F7A0037A21B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		B49340CD23A9DD2C00CFAB6A = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +77,8 @@
 		B49340D823A9DD2C00CFAB6A /* Exchange_Rates */ = {
 			isa = PBXGroup;
 			children = (
+				B4487D6023AB1F7A0037A21B /* Utils */,
+				B4487D5F23AB1F660037A21B /* Business */,
 				B49340FC23A9DEF700CFAB6A /* Resources */,
 				B49340ED23A9DE6100CFAB6A /* Modules */,
 				B49340D923A9DD2C00CFAB6A /* AppDelegate.swift */,
@@ -108,6 +131,7 @@
 		B49340F123A9DE8100CFAB6A /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -123,6 +147,7 @@
 		B49340F323A9DE8D00CFAB6A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B4487D5B23AB19BE0037A21B /* SettingsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,9 +291,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */,
 				B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */,
 				B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */,
 				B49340FB23A9DEE800CFAB6A /* SettingsViewController.swift in Sources */,
+				B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */,
+				B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
