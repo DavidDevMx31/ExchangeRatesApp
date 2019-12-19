@@ -10,21 +10,58 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    @IBOutlet weak var decimalPositionStepper: UIStepper!
+    @IBOutlet weak var decimalPositionLabel: UILabel!
+    @IBOutlet weak var dataUsageSwitch: UISwitch!
+    @IBOutlet weak var alternativeCurrencySwitch: UISwitch!
+    
+    private var presenter: SettingsPresenter!
+    
+    private var decimalPositions = 0 {
+        didSet {
+            decimalPositionLabel.text = "\(decimalPositions) decimal positions"
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupControls()
+        presenter = SettingsPresenter(view: self)
     }
-    */
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        presenter.getUserSettings()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        presenter.saveSettings(decimalPositions: decimalPositions, saveData: dataUsageSwitch.isOn, showAlternativeCurrencies: alternativeCurrencySwitch.isOn)
+    }
+    
+    func setupControls() {
+        decimalPositionStepper.minimumValue = 1
+        decimalPositionStepper.maximumValue = 6
+        decimalPositionStepper.value = 2
+        decimalPositions = 2
+    }
+    
+    @IBAction func decimalPositionsChanged(_ sender: UIStepper) {
+        decimalPositions = Int(sender.value)
+    }
+}
 
+extension SettingsViewController: SettingsProtocol {
+    
+    func setUserDefaults(defaults: SettingsModel) {
+        decimalPositions = defaults.decimalPositions
+        decimalPositionStepper.value = Double(decimalPositions)
+        
+        dataUsageSwitch.isOn = defaults.saveData
+        alternativeCurrencySwitch.isOn = defaults.showAlternativeCurrencies
+    }
+    
 }
