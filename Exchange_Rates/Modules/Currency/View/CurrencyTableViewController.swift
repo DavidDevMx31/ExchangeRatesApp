@@ -45,6 +45,8 @@ class CurrencyTableViewController: UITableViewController {
 extension CurrencyTableViewController: CurrencyProtocol {
     
     func showCurrencies() {
-        self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 }
