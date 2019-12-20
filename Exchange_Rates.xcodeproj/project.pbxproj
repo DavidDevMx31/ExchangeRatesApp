@@ -19,6 +19,9 @@
 		B49340E323A9DD3500CFAB6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B49340E223A9DD3500CFAB6A /* Assets.xcassets */; };
 		B49340E623A9DD3500CFAB6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49340E423A9DD3500CFAB6A /* LaunchScreen.storyboard */; };
 		B49340FB23A9DEE800CFAB6A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49340FA23A9DEE800CFAB6A /* SettingsViewController.swift */; };
+		B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */; };
+		B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */; };
+		B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		B49340E523A9DD3500CFAB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B49340E723A9DD3500CFAB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B49340FA23A9DEE800CFAB6A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCaller.swift; sourceTree = "<group>"; };
+		B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCallerProtocol.swift; sourceTree = "<group>"; };
+		B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceEndpoints.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +58,7 @@
 		B4487D5F23AB1F660037A21B /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				B4C3531B23AD7C71001EB6EF /* WebService */,
 			);
 			path = Business;
 			sourceTree = "<group>";
@@ -60,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */,
+				B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -229,6 +237,15 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		B4C3531B23AD7C71001EB6EF /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */,
+				B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */,
+			);
+			path = WebService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -302,7 +319,10 @@
 			files = (
 				B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */,
 				B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */,
+				B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */,
+				B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */,
 				B4487D6723AB23F20037A21B /* CurrencyModel.swift in Sources */,
+				B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */,
 				B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */,
 				B4487D6923AB24270037A21B /* CurrencyPresenter.swift in Sources */,
 				B4487D6423AB22B00037A21B /* CurrencyTableViewController.swift in Sources */,

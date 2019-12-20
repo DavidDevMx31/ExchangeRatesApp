@@ -10,47 +10,57 @@ import Foundation
 
 protocol CurrencyProtocol {
     func showCurrencies()
+    func showError(errorMessage: String)
 }
 
 class CurrencyPresenter {
     private var view: CurrencyProtocol?
     var currencies = [CurrencyModel]()
     
-    init(view: CurrencyProtocol) {
+    func attachView(view: CurrencyProtocol) {
         self.view = view
     }
     
-    func getCurrencies() {
-        let session = URLSession.shared
-        let url = URL(string: "https://openexchangerates.org/api/currencies.json?show_alternative=false")
-        
-        let task = session.dataTask(with: url!) { data, response, error in
-            
-            //Check for errors
-            if error != nil {
-                print(error?.localizedDescription ?? "No se pudo leer error")
-                return
-            }
-            
-            guard let httpCode = response as? HTTPURLResponse, (200...299).contains(httpCode.statusCode) else {
-                print("Status code not successful")
-                return
-            }
-            
-            if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: String] {
-                for element in json {
-                    let currency = CurrencyModel(code: element.key, name: element.value)
-                    self.currencies.append(currency)
-                }
-                
-                self.currencies.sort {
-                    $0.code < $1.code
-                }
-                self.view?.showCurrencies()
-            }
-        }
-        
-        task.resume()
+    func detachView() {
+        self.view = nil
     }
     
+    func getCurrencies() {
+        fetchAllCurrencies()
+    }
+    
+    func fetchAllCurrencies() {
+        let url = URL(string: WebServiceEndpoints.GetAllCurrencies.rawValue)
+        var request = URLRequest(url: url!)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let ws = WebServiceCaller(delegate: self)
+        ws.executeRequest(request: request)
+    }
+}
+
+extension CurrencyPresenter: WebServiceCallerProtocol {
+    
+    func didReceiveError(error: Error?, errorMessage: String?) {
+        
+        if let message = error {
+            self.view?.showError(errorMessage: message.localizedDescription)
+        } else if let message = errorMessage {
+            self.view?.showError(errorMessage: message)
+        }
+    }
+    
+    func didReceiveResponse(response: Data) {
+        if let json = try? JSONSerialization.jsonObject(with: response, options: []) as? [String: String] {
+            for element in json {
+                let currency = CurrencyModel(code: element.key, name: element.value)
+                self.currencies.append(currency)
+            }
+            
+            self.currencies.sort {
+                $0.code < $1.code
+            }
+            self.view?.showCurrencies()
+        }
+    }
 }
