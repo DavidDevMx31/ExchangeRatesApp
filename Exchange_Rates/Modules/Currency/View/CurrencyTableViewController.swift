@@ -60,6 +60,8 @@ class CurrencyTableViewController: UITableViewController {
         // searchController will use this view controller to display the search results
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Enter the currency code or name"
+        searchController.obscuresBackgroundDuringPresentation = false
         
         searchController.searchBar.sizeToFit()
         tableView.tableHeaderView = searchController.searchBar
@@ -89,7 +91,6 @@ extension CurrencyTableViewController: CurrencyProtocol {
 extension CurrencyTableViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        
         guard let searchText = searchController.searchBar.text else { return }
         
         if searchText.replacingOccurrences(of: " ", with: "").isEmpty == true {
