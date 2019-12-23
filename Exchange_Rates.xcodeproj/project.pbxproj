@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,7 @@
 		B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */; };
 		B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */; };
 		B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */; };
+		B4FF90E323AED8C100D29063 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FF90E223AED8C100D29063 /* RealmService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCaller.swift; sourceTree = "<group>"; };
 		B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCallerProtocol.swift; sourceTree = "<group>"; };
 		B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceEndpoints.swift; sourceTree = "<group>"; };
+		B4FF90E223AED8C100D29063 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 		B4487D5F23AB1F660037A21B /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				B4FF90E123AED8AC00D29063 /* Realm */,
 				B4C3531B23AD7C71001EB6EF /* WebService */,
 			);
 			path = Business;
@@ -253,13 +256,20 @@
 			path = WebService;
 			sourceTree = "<group>";
 		};
+		B4FF90E123AED8AC00D29063 /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				B4FF90E223AED8C100D29063 /* RealmService.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
 		CFCED755F5ECB59459109A54 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				40DE4688C3EEA76EFF1597DF /* Pods-Exchange_Rates.debug.xcconfig */,
 				A26157EE45D3A334172358E2 /* Pods-Exchange_Rates.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -395,6 +405,7 @@
 				B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */,
 				B4487D6923AB24270037A21B /* CurrencyPresenter.swift in Sources */,
 				B4487D6423AB22B00037A21B /* CurrencyTableViewController.swift in Sources */,
+				B4FF90E323AED8C100D29063 /* RealmService.swift in Sources */,
 				B49340FB23A9DEE800CFAB6A /* SettingsViewController.swift in Sources */,
 				B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */,
 				B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */,

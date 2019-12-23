@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 protocol CurrencyProtocol {
     func showCurrencies()
@@ -37,6 +38,18 @@ class CurrencyPresenter {
         let ws = WebServiceCaller(delegate: self)
         ws.executeRequest(request: request)
     }
+    
+    func saveCurrencies(currencies: [CurrencyModel]) {
+        DispatchQueue.main.async {
+            RealmService.instance.addArrayOfObjectsWithPK(currencies)
+            self.currencies = currencies
+            self.currencies.sort {
+                $0.code < $1.code
+            }
+            self.view?.showCurrencies()
+        }
+    }
+    
 }
 
 extension CurrencyPresenter: WebServiceCallerProtocol {
@@ -52,15 +65,16 @@ extension CurrencyPresenter: WebServiceCallerProtocol {
     
     func didReceiveResponse(response: Data) {
         if let json = try? JSONSerialization.jsonObject(with: response, options: []) as? [String: String] {
+            var response = [CurrencyModel]()
             for element in json {
-                let currency = CurrencyModel(code: element.key, name: element.value)
-                self.currencies.append(currency)
+                let currency = CurrencyModel(value: ["code": element.key,
+                                                     "name": element.value,
+                                                     "isFavorite": false,
+                                                     "isAlternative": false])
+                response.append(currency)
             }
-            
-            self.currencies.sort {
-                $0.code < $1.code
-            }
-            self.view?.showCurrencies()
+            self.saveCurrencies(currencies: response)
         }
     }
+    
 }

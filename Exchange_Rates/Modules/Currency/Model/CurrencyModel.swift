@@ -7,8 +7,15 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct CurrencyModel {
-    var code: String
-    var name: String
+@objcMembers class CurrencyModel: Object {
+    dynamic var code: String = ""
+    dynamic var name: String = ""
+    dynamic var isFavorite: Bool = false
+    dynamic var isAlternative: Bool = false
+    
+    override static func primaryKey() -> String? {
+        return "code"
+    }
 }

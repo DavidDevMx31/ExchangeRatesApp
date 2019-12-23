@@ -52,17 +52,18 @@ class CurrencyTableViewController: UITableViewController {
 extension CurrencyTableViewController: CurrencyProtocol {
     
     func showCurrencies() {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
+        //DispatchQueue.main.async { [weak self] in
+            self.tableView.reloadData()
+        //}
     }
     
     func showError(errorMessage: String) {
-        DispatchQueue.main.async { [weak self] in
-            let ac = UIAlertController(title: "Something happened!", message: errorMessage, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Got it!", style: .default))
+        //DispatchQueue.main.async { [weak self] in
+        let ac = UIAlertController(title: "Something happened!", message: errorMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Got it!", style: .default))
             
-            self?.present(ac, animated: true)
-        }
+            //self?.present(ac, animated: true)
+        self.present(ac, animated: true)
+        //}
     }
 }
