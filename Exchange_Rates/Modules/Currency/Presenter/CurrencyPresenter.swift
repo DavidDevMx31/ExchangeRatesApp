@@ -38,6 +38,15 @@ class CurrencyPresenter {
         }
     }
     
+    func refreshCurrenciesData() {
+        fetchCurrenciesFromAPI()
+    }
+    
+    func filterCurrenciesBy(code: String) {
+        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(code)' OR name CONTAINS '\(code)'").sorted(byKeyPath: "code", ascending: true)
+        currencies = Array(filteredCurrencies)
+    }
+    
     private func getCurrenciesFromRealm() {
         print("Obteniendo datos locales")
         let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
@@ -55,7 +64,7 @@ class CurrencyPresenter {
         ws.executeRequest(request: request)
     }
     
-    func saveCurrencies(currencies: [CurrencyModel]) {
+    private func saveCurrencies(currencies: [CurrencyModel]) {
         DispatchQueue.main.async {
             RealmService.instance.addArrayOfObjectsWithPK(currencies)
             self.getCurrenciesFromRealm()

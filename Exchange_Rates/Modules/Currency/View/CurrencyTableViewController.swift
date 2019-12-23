@@ -11,15 +11,13 @@ import UIKit
 class CurrencyTableViewController: UITableViewController {
 
     var presenter: CurrencyPresenter!
+    var searchController: UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Currency List"
-        presenter = CurrencyPresenter()
-        presenter.attachView(view: self)
-        
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCurrencies))
+        setupViewController()
+        setupSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,9 +47,29 @@ class CurrencyTableViewController: UITableViewController {
         return cell
     }
     
-    //@objc func refreshCurrencies() {
+    func setupViewController() {
+        title = "Currency List"
+        presenter = CurrencyPresenter()
+        presenter.attachView(view: self)
         
-    //}
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCurrencies))
+    }
+    
+    func setupSearchBar() {
+        // Initializing with searchResultsController set to nil means that
+        // searchController will use this view controller to display the search results
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        
+        searchController.searchBar.sizeToFit()
+        tableView.tableHeaderView = searchController.searchBar
+        
+        definesPresentationContext = true
+    }
+    
+    @objc func refreshCurrencies() {
+        presenter.refreshCurrenciesData()
+    }
 }
 
 extension CurrencyTableViewController: CurrencyProtocol {
@@ -65,5 +83,19 @@ extension CurrencyTableViewController: CurrencyProtocol {
         ac.addAction(UIAlertAction(title: "Got it!", style: .default))
             
         self.present(ac, animated: true)
+    }
+}
+
+extension CurrencyTableViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        guard let searchText = searchController.searchBar.text else { return }
+        
+        if searchText.replacingOccurrences(of: " ", with: "").isEmpty == true {
+            presenter.getCurrencies()
+        } else {
+            presenter.filterCurrenciesBy(code: searchText)
+        }
     }
 }
