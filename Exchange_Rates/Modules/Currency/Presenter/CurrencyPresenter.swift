@@ -16,7 +16,11 @@ protocol CurrencyProtocol {
 
 class CurrencyPresenter {
     private var view: CurrencyProtocol?
-    var currencies = [CurrencyModel]()
+    var currencies = [CurrencyModel]() {
+        didSet {
+            view?.showCurrencies()
+        }
+    }
     
     func attachView(view: CurrencyProtocol) {
         self.view = view
@@ -27,10 +31,22 @@ class CurrencyPresenter {
     }
     
     func getCurrencies() {
-        fetchAllCurrencies()
+        getCurrenciesFromRealm()
+        
+        if currencies.count == 0 {
+            fetchCurrenciesFromAPI()
+        }
     }
     
-    func fetchAllCurrencies() {
+    private func getCurrenciesFromRealm() {
+        print("Obteniendo datos locales")
+        let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
+        currencies = Array(savedCurrencies)
+    }
+    
+    
+    private func fetchCurrenciesFromAPI() {
+        print("Obteniendo datos API")
         let url = URL(string: WebServiceEndpoints.GetAllCurrencies.rawValue)
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -42,11 +58,7 @@ class CurrencyPresenter {
     func saveCurrencies(currencies: [CurrencyModel]) {
         DispatchQueue.main.async {
             RealmService.instance.addArrayOfObjectsWithPK(currencies)
-            self.currencies = currencies
-            self.currencies.sort {
-                $0.code < $1.code
-            }
-            self.view?.showCurrencies()
+            self.getCurrenciesFromRealm()
         }
     }
     
@@ -55,7 +67,6 @@ class CurrencyPresenter {
 extension CurrencyPresenter: WebServiceCallerProtocol {
     
     func didReceiveError(error: Error?, errorMessage: String?) {
-        
         if let message = error {
             self.view?.showError(errorMessage: message.localizedDescription)
         } else if let message = errorMessage {
@@ -76,5 +87,5 @@ extension CurrencyPresenter: WebServiceCallerProtocol {
             self.saveCurrencies(currencies: response)
         }
     }
-    
+
 }

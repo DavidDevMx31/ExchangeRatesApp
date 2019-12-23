@@ -18,6 +18,8 @@ class CurrencyTableViewController: UITableViewController {
         title = "Currency List"
         presenter = CurrencyPresenter()
         presenter.attachView(view: self)
+        
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCurrencies))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,26 +46,24 @@ class CurrencyTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath)
         let currency = presenter.currencies[indexPath.row]
         cell.textLabel?.text = "\(currency.code) - \(currency.name)"
-        
         return cell
     }
+    
+    //@objc func refreshCurrencies() {
+        
+    //}
 }
 
 extension CurrencyTableViewController: CurrencyProtocol {
     
     func showCurrencies() {
-        //DispatchQueue.main.async { [weak self] in
-            self.tableView.reloadData()
-        //}
+        self.tableView.reloadData()
     }
     
     func showError(errorMessage: String) {
-        //DispatchQueue.main.async { [weak self] in
         let ac = UIAlertController(title: "Something happened!", message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Got it!", style: .default))
             
-            //self?.present(ac, animated: true)
         self.present(ac, animated: true)
-        //}
     }
 }
