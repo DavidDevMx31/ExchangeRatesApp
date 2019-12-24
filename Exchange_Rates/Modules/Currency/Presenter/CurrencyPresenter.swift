@@ -16,6 +16,7 @@ protocol CurrencyProtocol {
 
 class CurrencyPresenter {
     private var view: CurrencyProtocol?
+    private var favoriteCurrencies = [String]()
     var currencies = [CurrencyModel]() {
         didSet {
             view?.showCurrencies()
@@ -31,6 +32,7 @@ class CurrencyPresenter {
     }
     
     func getCurrencies() {
+        getUserFavoriteCurrencies()
         getCurrenciesFromRealm()
         
         if currencies.count == 0 {
@@ -47,8 +49,29 @@ class CurrencyPresenter {
         currencies = Array(filteredCurrencies)
     }
     
+    func checkIsFavoriteCurrency(currencyCode: String) -> Bool {
+        if favoriteCurrencies.contains(currencyCode) {
+            return true
+        }
+        return false
+    }
+    
     func markOrUnmarkFavoriteBy(currencyCode: String) -> Bool {
+        if let index = favoriteCurrencies.firstIndex(of: currencyCode) {
+            favoriteCurrencies.remove(at: index)
+        } else {
+            favoriteCurrencies.append(currencyCode)
+        }
+        
+        saveFavoriteCurrencies()
         return true
+    }
+    
+    private func getUserFavoriteCurrencies() {
+        DispatchQueue.global().async { [weak self] in
+            let defaults = UserDefaults.standard
+            self?.favoriteCurrencies = defaults.array(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
+        }
     }
     
     private func getCurrenciesFromRealm() {
@@ -73,6 +96,12 @@ class CurrencyPresenter {
         }
     }
     
+    private func saveFavoriteCurrencies() {
+        DispatchQueue.global().async { [weak self] in
+            let defaults = UserDefaults.standard
+            defaults.set(self?.favoriteCurrencies, forKey: CurrencyKeys.favorites.rawValue)
+        }
+    }
 }
 
 extension CurrencyPresenter: WebServiceCallerProtocol {
@@ -91,7 +120,6 @@ extension CurrencyPresenter: WebServiceCallerProtocol {
             for element in json {
                 let currency = CurrencyModel(value: ["code": element.key,
                                                      "name": element.value,
-                                                     "isFavorite": false,
                                                      "isAlternative": false])
                 response.append(currency)
             }

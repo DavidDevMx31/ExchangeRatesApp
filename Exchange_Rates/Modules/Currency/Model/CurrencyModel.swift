@@ -12,7 +12,6 @@ import RealmSwift
 @objcMembers class CurrencyModel: Object {
     dynamic var code: String = ""
     dynamic var name: String = ""
-    dynamic var isFavorite: Bool = false
     dynamic var isAlternative: Bool = false
     
     override static func primaryKey() -> String? {

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          En el finder CMD+Shift*G y pegar la ruta desde /Users...
          Abrir el archivo usando RealmStudio
          */
-        //print(RealmService.instance.writeRealmPath())
+        print(RealmService.instance.writeRealmPath())
         return true
     }
 
