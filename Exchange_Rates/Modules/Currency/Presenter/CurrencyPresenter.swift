@@ -47,15 +47,17 @@ class CurrencyPresenter {
         currencies = Array(filteredCurrencies)
     }
     
+    func markOrUnmarkFavoriteBy(currencyCode: String) -> Bool {
+        return true
+    }
+    
     private func getCurrenciesFromRealm() {
-        print("Obteniendo datos locales")
         let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
         currencies = Array(savedCurrencies)
     }
     
     
     private func fetchCurrenciesFromAPI() {
-        print("Obteniendo datos API")
         let url = URL(string: WebServiceEndpoints.GetAllCurrencies.rawValue)
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
