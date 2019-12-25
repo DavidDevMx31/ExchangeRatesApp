@@ -49,12 +49,12 @@ class CurrencyTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let currencyCode = presenter.currencies[indexPath.row].code
-        let isFavorite = presenter.checkIsFavoriteCurrency(currencyCode: currencyCode)
+        let isFavorite = presenter.checkIfIsFavoriteCurrency(currencyCode: currencyCode)
         
         let title = isFavorite ? "Unmark as Favorite" : "Mark as Favorite"
         let favoriteAction = UIContextualAction(style: .normal, title: title) { (action, view, completionHandler) in
-            let result = self.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
-            completionHandler(result)
+            self.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
+            completionHandler(true)
         }
         favoriteAction.backgroundColor = isFavorite ? UIColor.red : UIColor.green
         
@@ -111,7 +111,7 @@ extension CurrencyTableViewController: UISearchResultsUpdating {
         if searchText.replacingOccurrences(of: " ", with: "").isEmpty == true {
             presenter.getCurrencies()
         } else {
-            presenter.filterCurrenciesBy(code: searchText)
+            presenter.filterCurrenciesBy(currencyCode: searchText)
         }
     }
 }

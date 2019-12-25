@@ -44,27 +44,26 @@ class CurrencyPresenter {
         fetchCurrenciesFromAPI()
     }
     
-    func filterCurrenciesBy(code: String) {
-        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(code)' OR name CONTAINS '\(code)'").sorted(byKeyPath: "code", ascending: true)
+    func filterCurrenciesBy(currencyCode: String) {
+        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(currencyCode)' OR name CONTAINS '\(currencyCode)'").sorted(byKeyPath: "code", ascending: true)
         currencies = Array(filteredCurrencies)
     }
     
-    func checkIsFavoriteCurrency(currencyCode: String) -> Bool {
+    func checkIfIsFavoriteCurrency(currencyCode: String) -> Bool {
         if favoriteCurrencies.contains(currencyCode) {
             return true
         }
         return false
     }
     
-    func markOrUnmarkFavoriteBy(currencyCode: String) -> Bool {
+    func markOrUnmarkFavoriteBy(currencyCode: String) {
         if let index = favoriteCurrencies.firstIndex(of: currencyCode) {
             favoriteCurrencies.remove(at: index)
         } else {
             favoriteCurrencies.append(currencyCode)
         }
         
-        saveFavoriteCurrencies()
-        return true
+        saveUserFavoriteCurrencies()
     }
     
     private func getUserFavoriteCurrencies() {
@@ -78,7 +77,6 @@ class CurrencyPresenter {
         let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
         currencies = Array(savedCurrencies)
     }
-    
     
     private func fetchCurrenciesFromAPI() {
         let url = URL(string: WebServiceEndpoints.GetAllCurrencies.rawValue)
@@ -96,7 +94,7 @@ class CurrencyPresenter {
         }
     }
     
-    private func saveFavoriteCurrencies() {
+    private func saveUserFavoriteCurrencies() {
         DispatchQueue.global().async { [weak self] in
             let defaults = UserDefaults.standard
             defaults.set(self?.favoriteCurrencies, forKey: CurrencyKeys.favorites.rawValue)
