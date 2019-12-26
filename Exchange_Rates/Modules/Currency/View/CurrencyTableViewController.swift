@@ -48,8 +48,10 @@ class CurrencyTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        var actions = [UIContextualAction]()
         let currencyCode = presenter.currencies[indexPath.row].code
         let isFavorite = presenter.checkIfIsFavoriteCurrency(currencyCode: currencyCode)
+        let isBase = presenter.checkIfIsBaseCurrency(currencyCode: currencyCode)
         
         let title = isFavorite ? "Unmark as Favorite" : "Mark as Favorite"
         let favoriteAction = UIContextualAction(style: .normal, title: title) { (action, view, completionHandler) in
@@ -57,8 +59,18 @@ class CurrencyTableViewController: UITableViewController {
             completionHandler(true)
         }
         favoriteAction.backgroundColor = isFavorite ? UIColor.red : UIColor.green
+        actions.append(favoriteAction)
         
-        let configuration = UISwipeActionsConfiguration(actions: [favoriteAction])
+        if !isBase {
+            let setBaseCurrencyAction = UIContextualAction(style: .normal, title: "Set as base") { (action, view, completionHandler) in
+                self.presenter.setBaseCurrency(currencyCode: currencyCode)
+                completionHandler(true)
+            }
+            setBaseCurrencyAction.backgroundColor = .blue
+            actions.append(setBaseCurrencyAction)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: actions)
         return configuration
     }
     

@@ -22,6 +22,7 @@ class CurrencyPresenter {
             view?.showCurrencies()
         }
     }
+    private var baseCurrencyCode: String = ""
     
     func attachView(view: CurrencyProtocol) {
         self.view = view
@@ -32,6 +33,7 @@ class CurrencyPresenter {
     }
     
     func getCurrencies() {
+        getUserBaseCurrency()
         getUserFavoriteCurrencies()
         getCurrenciesFromRealm()
         
@@ -68,7 +70,26 @@ class CurrencyPresenter {
         saveUserFavoriteCurrencies()
     }
     
+    func checkIfIsBaseCurrency(currencyCode: String) -> Bool {
+        if baseCurrencyCode == currencyCode {
+            return true
+        }
+        
+        return false
+    }
+    
+    func setBaseCurrency(currencyCode: String) {
+        baseCurrencyCode = currencyCode
+        DispatchQueue.global().async {
+            print("Guardando moneda base: \(currencyCode)")
+            let defaults = UserDefaults.standard
+            defaults.set(currencyCode, forKey: CurrencyKeys.base.rawValue)
+        }
+    }
+    
     private func getUserFavoriteCurrencies() {
+        if favoriteCurrencies.count != 0 { return }
+        
         DispatchQueue.global().async { [weak self] in
             let defaults = UserDefaults.standard
             self?.favoriteCurrencies = defaults.array(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
@@ -137,6 +158,18 @@ class CurrencyPresenter {
             //print("Guardando datos de: \(keyName)")
             let defaults = UserDefaults.standard
             defaults.set(dataArray, forKey: keyName)
+        }
+    }
+    
+    private func getUserBaseCurrency() {
+        if baseCurrencyCode != "" { return }
+        DispatchQueue.global().async {
+            print("Obteniendo moneda base")
+            let defaults = UserDefaults.standard
+            if let baseCode = defaults.string(forKey: CurrencyKeys.base.rawValue) {
+                self.baseCurrencyCode = baseCode
+                print("Base usuario: \(baseCode)")
+            }
         }
     }
 }

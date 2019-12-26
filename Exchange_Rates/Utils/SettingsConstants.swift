@@ -21,4 +21,9 @@ struct SettingsConstants {
 enum CurrencyKeys: String {
     case favorites = "favoriteCurrencies"
     case alternative = "alternativeCurrencies"
+    case base = "baseCurrencyCode"
+}
+
+struct CurrencyConstants {
+    static let defaultBaseCurrency = "USD"
 }
