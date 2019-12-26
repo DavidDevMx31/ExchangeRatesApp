@@ -36,16 +36,18 @@ class CurrencyPresenter {
         getCurrenciesFromRealm()
         
         if currencies.count == 0 {
-            fetchCurrenciesFromAPI()
+            fetchAllCurrenciesFromAPI()
+            fetchAlternativeCurrenciesFromAPI()
         }
     }
     
     func refreshCurrenciesData() {
-        fetchCurrenciesFromAPI()
+        fetchAllCurrenciesFromAPI()
     }
     
     func filterCurrenciesBy(currencyCode: String) {
-        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(currencyCode)' OR name CONTAINS '\(currencyCode)'").sorted(byKeyPath: "code", ascending: true)
+        let userFilter = currencyCode.uppercased()
+        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(userFilter)' OR name CONTAINS '\(userFilter)'").sorted(byKeyPath: "code", ascending: true)
         currencies = Array(filteredCurrencies)
     }
     
@@ -78,13 +80,26 @@ class CurrencyPresenter {
         currencies = Array(savedCurrencies)
     }
     
-    private func fetchCurrenciesFromAPI() {
-        let url = URL(string: WebServiceEndpoints.GetAllCurrencies.rawValue)
+    private func fetchAllCurrenciesFromAPI() {
+        print("Obteniendo todas las monedas")
+        let endpoint = WebServiceEndpoints.GetAllCurrencies
+        let url = URL(string: endpoint.rawValue)
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request)
+        ws.executeRequest(request: request, webService: endpoint)
+    }
+    
+    private func fetchAlternativeCurrenciesFromAPI() {
+        print("Obteniendo las monedas alternativas")
+        let endpoint = WebServiceEndpoints.GetAlternativeCurrencies
+        let url = URL(string: endpoint.rawValue)
+        var request = URLRequest(url: url!)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let ws = WebServiceCaller(delegate: self)
+        ws.executeRequest(request: request, webService: endpoint)
     }
     
     private func saveCurrencies(currencies: [CurrencyModel]) {
@@ -95,16 +110,40 @@ class CurrencyPresenter {
     }
     
     private func saveUserFavoriteCurrencies() {
-        DispatchQueue.global().async { [weak self] in
+        self.saveArrayToDefaults(dataArray: self.favoriteCurrencies, keyName: CurrencyKeys.favorites.rawValue)
+    }
+    
+    private func fillAllCurrencies(data: [String: String]) {
+        var allCurrencies = [CurrencyModel]()
+        for element in data {
+            let currency = CurrencyModel(value: ["code": element.key,
+                                                 "name": element.value,
+                                                 "isAlternative": false])
+            allCurrencies.append(currency)
+        }
+        self.saveCurrencies(currencies: allCurrencies)
+    }
+    
+    private func fillAlternativeCurrencies(data: [String: String]) {
+        var alternativeCurrencies = [String]()
+        for currency in data {
+            alternativeCurrencies.append(currency.key)
+        }
+        saveArrayToDefaults(dataArray: alternativeCurrencies, keyName: CurrencyKeys.alternative.rawValue)
+    }
+    
+    private func saveArrayToDefaults(dataArray: [String], keyName: String) {
+        DispatchQueue.global().async {
+            //print("Guardando datos de: \(keyName)")
             let defaults = UserDefaults.standard
-            defaults.set(self?.favoriteCurrencies, forKey: CurrencyKeys.favorites.rawValue)
+            defaults.set(dataArray, forKey: keyName)
         }
     }
 }
 
 extension CurrencyPresenter: WebServiceCallerProtocol {
     
-    func didReceiveError(error: Error?, errorMessage: String?) {
+    func didReceiveError(error: Error?, errorMessage: String?, webService: WebServiceEndpoints?) {
         if let message = error {
             self.view?.showError(errorMessage: message.localizedDescription)
         } else if let message = errorMessage {
@@ -112,16 +151,18 @@ extension CurrencyPresenter: WebServiceCallerProtocol {
         }
     }
     
-    func didReceiveResponse(response: Data) {
+    func didReceiveResponse(response: Data, webService: WebServiceEndpoints?) {
         if let json = try? JSONSerialization.jsonObject(with: response, options: []) as? [String: String] {
-            var response = [CurrencyModel]()
-            for element in json {
-                let currency = CurrencyModel(value: ["code": element.key,
-                                                     "name": element.value,
-                                                     "isAlternative": false])
-                response.append(currency)
+            if let endpoint = webService {
+                switch endpoint {
+                case .GetAlternativeCurrencies:
+                    fillAlternativeCurrencies(data: json)
+                default:
+                    fillAllCurrencies(data: json)
+                }
+            } else {
+                print("No se indicó un endpoint al obtener la información de monedas. No se puede determinar qué flujo sigue.")
             }
-            self.saveCurrencies(currencies: response)
         }
     }
 

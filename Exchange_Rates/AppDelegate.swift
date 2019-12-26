@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          Abrir el archivo usando RealmStudio
          */
         print(RealmService.instance.writeRealmPath())
+        //RealmService.instance.deleteAll()
         return true
     }
 

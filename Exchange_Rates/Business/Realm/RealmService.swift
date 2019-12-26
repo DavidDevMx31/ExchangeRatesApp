@@ -73,4 +73,14 @@ class RealmService {
     func writeRealmPath(){
         print("Path: \(realm.configuration.fileURL!)")
     }
+    
+    func deleteAll() {
+        do{
+            try realm.write {
+                realm.deleteAll()
+            }
+        } catch {
+            print("deleteAll Error: \(error)")
+        }
+    }
 }

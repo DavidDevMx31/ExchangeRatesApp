@@ -9,6 +9,6 @@
 import Foundation
 
 protocol WebServiceCallerProtocol {
-    func didReceiveResponse(response: Data)
-    func didReceiveError(error: Error?, errorMessage: String?)
+    func didReceiveResponse(response: Data, webService: WebServiceEndpoints?)
+    func didReceiveError(error: Error?, errorMessage: String?, webService: WebServiceEndpoints?)
 }

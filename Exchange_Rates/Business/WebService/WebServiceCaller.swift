@@ -16,7 +16,7 @@ class WebServiceCaller {
         self.delegate = delegate
     }
     
-    func executeRequest(request: URLRequest) {
+    func executeRequest(request: URLRequest, webService: WebServiceEndpoints?) {
         
         let session = URLSession.shared
         
@@ -25,25 +25,25 @@ class WebServiceCaller {
             //Error
             if let responseError = error {
                 print(responseError.localizedDescription)
-                self.delegate?.didReceiveError(error: responseError, errorMessage: nil)
+                self.delegate?.didReceiveError(error: responseError, errorMessage: nil, webService: webService)
                 return
             }
             
             //Tipo HTTP
             guard let httpResponse = response as? HTTPURLResponse else {
                 print("La respuesta no cumple con el protocolo HTTP")
-                self.delegate?.didReceiveError(error: nil, errorMessage: "The response does not implements the HTTP Protocol")
+                self.delegate?.didReceiveError(error: nil, errorMessage: "The response does not implements the HTTP Protocol", webService: webService)
                 return
             }
             
             //Código HTTP
             if !(200...299).contains(httpResponse.statusCode) {
-                self.delegate?.didReceiveError(error: nil, errorMessage: "The server responded with a status of \(httpResponse.statusCode)")
+                self.delegate?.didReceiveError(error: nil, errorMessage: "The server responded with a status of \(httpResponse.statusCode)", webService: webService)
                 return
             }
     
             if let responseData = data {
-                self.delegate?.didReceiveResponse(response: responseData)
+                self.delegate?.didReceiveResponse(response: responseData, webService: webService)
             }
         }
         task.resume()
