@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		106948D567FBD1EA7FB2C1E5 /* Pods_Exchange_Rates.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743E9BA3482C1A3D4C88B62C /* Pods_Exchange_Rates.framework */; };
+		B4455AB623B7025E007A87E4 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4455AB523B7025E007A87E4 /* CurrencyCell.swift */; };
 		B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5B23AB19BE0037A21B /* SettingsModel.swift */; };
 		B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */; };
 		B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */; };
@@ -30,6 +31,7 @@
 		40DE4688C3EEA76EFF1597DF /* Pods-Exchange_Rates.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exchange_Rates.debug.xcconfig"; path = "Target Support Files/Pods-Exchange_Rates/Pods-Exchange_Rates.debug.xcconfig"; sourceTree = "<group>"; };
 		743E9BA3482C1A3D4C88B62C /* Pods_Exchange_Rates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Exchange_Rates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A26157EE45D3A334172358E2 /* Pods-Exchange_Rates.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exchange_Rates.release.xcconfig"; path = "Target Support Files/Pods-Exchange_Rates/Pods-Exchange_Rates.release.xcconfig"; sourceTree = "<group>"; };
+		B4455AB523B7025E007A87E4 /* CurrencyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
 		B4487D5B23AB19BE0037A21B /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
 		B4487D6123AB1F9E0037A21B /* SettingsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsConstants.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				B4487D6323AB22B00037A21B /* CurrencyTableViewController.swift */,
+				B4455AB523B7025E007A87E4 /* CurrencyCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */,
 				B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */,
 				B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */,
+				B4455AB623B7025E007A87E4 /* CurrencyCell.swift in Sources */,
 				B4487D6723AB23F20037A21B /* CurrencyModel.swift in Sources */,
 				B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */,
 				B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */,

@@ -16,22 +16,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CurrencyCell" textLabel="BWr-8u-ymL" style="IBUITableViewCellStyleDefault" id="O8v-9y-YkO">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CurrencyCell" id="O8v-9y-YkO" customClass="CurrencyCell" customModule="Exchange_Rates" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="41.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O8v-9y-YkO" id="e2p-8D-hbS">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="41.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BWr-8u-ymL">
-                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmo-ON-4xt">
+                                            <rect key="frame" x="20" y="10" width="42" height="21.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Fav" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9J6-n1-YIq">
+                                            <rect key="frame" x="367" y="10.5" width="27" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="B" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMm-hP-3Mt">
+                                            <rect key="frame" x="347.5" y="10.5" width="11.5" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="cMm-hP-3Mt" firstAttribute="centerY" secondItem="e2p-8D-hbS" secondAttribute="centerY" id="1mQ-0v-HEQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="9J6-n1-YIq" secondAttribute="trailing" constant="20" id="8W9-zt-knV"/>
+                                        <constraint firstItem="bmo-ON-4xt" firstAttribute="top" secondItem="e2p-8D-hbS" secondAttribute="top" constant="10" id="8Ze-c6-jUC"/>
+                                        <constraint firstItem="9J6-n1-YIq" firstAttribute="centerY" secondItem="e2p-8D-hbS" secondAttribute="centerY" id="CXo-al-ayi"/>
+                                        <constraint firstItem="bmo-ON-4xt" firstAttribute="leading" secondItem="e2p-8D-hbS" secondAttribute="leading" constant="20" id="QU7-Xg-ReE"/>
+                                        <constraint firstAttribute="bottom" secondItem="bmo-ON-4xt" secondAttribute="bottom" constant="10" id="jBT-3c-Nme"/>
+                                        <constraint firstItem="9J6-n1-YIq" firstAttribute="leading" secondItem="cMm-hP-3Mt" secondAttribute="trailing" constant="8" id="mZA-3r-uJy"/>
+                                        <constraint firstItem="cMm-hP-3Mt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bmo-ON-4xt" secondAttribute="trailing" constant="10" id="oxR-2h-oEt"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bmo-ON-4xt" secondAttribute="trailing" constant="60" id="t77-QV-TOe"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="baseLabel" destination="cMm-hP-3Mt" id="SE1-3X-y7i"/>
+                                    <outlet property="favoriteLabel" destination="9J6-n1-YIq" id="F78-rF-CmS"/>
+                                    <outlet property="nameLabel" destination="bmo-ON-4xt" id="DJY-x2-4rV"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

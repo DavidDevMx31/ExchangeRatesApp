@@ -35,16 +35,20 @@ class CurrencyTableViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.currencies.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath)
-        let currency = presenter.currencies[indexPath.row]
-        cell.textLabel?.text = "\(currency.code) - \(currency.name)"
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath) as? CurrencyCell {
+            let currency = presenter.currencies[indexPath.row]
+            cell.fillCellData(name: "\(currency.code) - \(currency.name)",
+                isBase: presenter.checkIfIsBaseCurrency(currencyCode: currency.code),
+                isFavorite: presenter.checkIfIsFavoriteCurrency(currencyCode: currency.code))
+            return cell
+        }
+        fatalError("Error cargarndo la celda CurrencyCell")
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -56,6 +60,7 @@ class CurrencyTableViewController: UITableViewController {
         let title = isFavorite ? "Unmark as Favorite" : "Mark as Favorite"
         let favoriteAction = UIContextualAction(style: .normal, title: title) { (action, view, completionHandler) in
             self.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
             completionHandler(true)
         }
         favoriteAction.backgroundColor = isFavorite ? UIColor.red : UIColor.green
@@ -64,6 +69,7 @@ class CurrencyTableViewController: UITableViewController {
         if !isBase {
             let setBaseCurrencyAction = UIContextualAction(style: .normal, title: "Set as base") { (action, view, completionHandler) in
                 self.presenter.setBaseCurrency(currencyCode: currencyCode)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
                 completionHandler(true)
             }
             setBaseCurrencyAction.backgroundColor = .blue

@@ -45,6 +45,7 @@ class CurrencyPresenter {
     
     func refreshCurrenciesData() {
         fetchAllCurrenciesFromAPI()
+        fetchAlternativeCurrenciesFromAPI()
     }
     
     func filterCurrenciesBy(currencyCode: String) {
