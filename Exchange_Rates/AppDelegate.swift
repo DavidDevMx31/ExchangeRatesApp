@@ -15,6 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        /*
+         En el finder CMD+Shift*G y pegar la ruta desde /Users...
+         Abrir el archivo usando RealmStudio
+         */
+        print(RealmService.instance.writeRealmPath())
+        //RealmService.instance.deleteAll()
         return true
     }
 

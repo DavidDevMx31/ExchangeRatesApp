@@ -17,3 +17,13 @@ enum UserSettingsKeys: String {
 struct SettingsConstants {
     static let defaultDecimalPositions = 2
 }
+
+enum CurrencyKeys: String {
+    case favorites = "favoriteCurrencies"
+    case alternative = "alternativeCurrencies"
+    case base = "baseCurrencyCode"
+}
+
+struct CurrencyConstants {
+    static let defaultBaseCurrency = "USD"
+}
