@@ -17,7 +17,6 @@ class RatesViewController: UIViewController {
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var ratesTableView: UITableView!
     
-    
     var presenter: RatesPresenter!
     
     override func viewDidLoad() {
@@ -37,6 +36,8 @@ class RatesViewController: UIViewController {
         presenter = RatesPresenter()
         presenter.attachView(view: self)
         amountTextField.text = "1.0"
+        ratesTableView.delegate = self
+        ratesTableView.dataSource = self
     }
 
     func setupNavigationBar() {
@@ -61,11 +62,30 @@ class RatesViewController: UIViewController {
     }
 }
 
+extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RatesCell", for: indexPath) as? RatesCell else {
+            fatalError("Couldn't dequeue RatesCell")
+        }
+        
+        let currency = RealmService.instance.realm.objects(CurrencyModel.self).filter("code = 'USD'").first!
+        cell.fillCellData(rate: 1.0, currency: currency, equivalence: 0.05678)        
+        return cell
+    }
+    
+}
+
 extension RatesViewController: RatesProtocol {
     
     func showBaseCurrencyData(code: String, name: String) {
         currencyCodeLabel.text = code
         currencyNameLabel.text = name
+        ratesTableView.reloadData()
     }
     
     func noCurrencyCatalog() {
