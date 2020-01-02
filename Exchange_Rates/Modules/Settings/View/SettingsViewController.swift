@@ -28,6 +28,7 @@ class SettingsViewController: UIViewController {
         
         setupControls()
         presenter = SettingsPresenter(view: self)
+        title = "Settings"
     }
     
     override func viewWillAppear(_ animated: Bool) {
