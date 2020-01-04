@@ -32,9 +32,9 @@ class RatesCell: UITableViewCell {
         
     }
     
-    func fillCellData(rate: Double, currency: CurrencyModel, equivalence: Double){
-        ratesLabel.text = "\(rate) \(currency.code)"
-        currencyLabel.text = "\(currency.code) - \(currency.name)"
-        equivalenceLabel.text = "1 MXN = \(equivalence) \(currency.code)"
+    func fillCellData(rate: String, currencyCode: String, currencyName: String, equivalence: String, baseCode: String){
+        ratesLabel.text = "\(rate) \(currencyCode)"
+        currencyLabel.text = "\(currencyCode) - \(currencyName)"
+        equivalenceLabel.text = "1 \(baseCode) = \(equivalence) \(currencyCode)"
     }
 }

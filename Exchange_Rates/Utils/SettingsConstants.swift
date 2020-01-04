@@ -27,3 +27,7 @@ enum CurrencyKeys: String {
 struct CurrencyConstants {
     static let defaultBaseCurrency = "USD"
 }
+
+struct RatesConstants {
+    static let appID = "eaecbc4ee81748379bc11d1b99199009"
+}

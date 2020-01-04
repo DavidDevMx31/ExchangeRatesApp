@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		106948D567FBD1EA7FB2C1E5 /* Pods_Exchange_Rates.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743E9BA3482C1A3D4C88B62C /* Pods_Exchange_Rates.framework */; };
+		B405CA4E23BEF3F70030FCB1 /* RatesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B405CA4D23BEF3F70030FCB1 /* RatesResponse.swift */; };
+		B405CA5023BEF47C0030FCB1 /* RatesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B405CA4F23BEF47C0030FCB1 /* RatesModel.swift */; };
 		B4455AB623B7025E007A87E4 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4455AB523B7025E007A87E4 /* CurrencyCell.swift */; };
 		B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5B23AB19BE0037A21B /* SettingsModel.swift */; };
 		B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */; };
@@ -25,6 +27,7 @@
 		B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */; };
 		B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */; };
 		B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */; };
+		B4CA740923C028110099F6C1 /* RatesCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CA740823C028110099F6C1 /* RatesCellModel.swift */; };
 		B4CBFB1423BD867B00D08374 /* RatesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CBFB1323BD867B00D08374 /* RatesPresenter.swift */; };
 		B4E395CE23BD588B00B3ABEA /* RatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E395CD23BD588B00B3ABEA /* RatesViewController.swift */; };
 		B4FF90E323AED8C100D29063 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FF90E223AED8C100D29063 /* RealmService.swift */; };
@@ -34,6 +37,8 @@
 		40DE4688C3EEA76EFF1597DF /* Pods-Exchange_Rates.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exchange_Rates.debug.xcconfig"; path = "Target Support Files/Pods-Exchange_Rates/Pods-Exchange_Rates.debug.xcconfig"; sourceTree = "<group>"; };
 		743E9BA3482C1A3D4C88B62C /* Pods_Exchange_Rates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Exchange_Rates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A26157EE45D3A334172358E2 /* Pods-Exchange_Rates.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Exchange_Rates.release.xcconfig"; path = "Target Support Files/Pods-Exchange_Rates/Pods-Exchange_Rates.release.xcconfig"; sourceTree = "<group>"; };
+		B405CA4D23BEF3F70030FCB1 /* RatesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesResponse.swift; sourceTree = "<group>"; };
+		B405CA4F23BEF47C0030FCB1 /* RatesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesModel.swift; sourceTree = "<group>"; };
 		B4455AB523B7025E007A87E4 /* CurrencyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
 		B4487D5B23AB19BE0037A21B /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		B4487D5D23AB1A590037A21B /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
@@ -53,6 +58,7 @@
 		B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCaller.swift; sourceTree = "<group>"; };
 		B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceCallerProtocol.swift; sourceTree = "<group>"; };
 		B4C3532023AD8D00001EB6EF /* WebServiceEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceEndpoints.swift; sourceTree = "<group>"; };
+		B4CA740823C028110099F6C1 /* RatesCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesCellModel.swift; sourceTree = "<group>"; };
 		B4CBFB1323BD867B00D08374 /* RatesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesPresenter.swift; sourceTree = "<group>"; };
 		B4E395CD23BD588B00B3ABEA /* RatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesViewController.swift; sourceTree = "<group>"; };
 		B4FF90E223AED8C100D29063 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
@@ -204,6 +210,9 @@
 		B49340F623A9DEA900CFAB6A /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B405CA4D23BEF3F70030FCB1 /* RatesResponse.swift */,
+				B405CA4F23BEF47C0030FCB1 /* RatesModel.swift */,
+				B4CA740823C028110099F6C1 /* RatesCellModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -411,17 +420,20 @@
 				B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */,
 				B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */,
 				B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */,
+				B4CA740923C028110099F6C1 /* RatesCellModel.swift in Sources */,
 				B4C3532123AD8D00001EB6EF /* WebServiceEndpoints.swift in Sources */,
 				B4455AB623B7025E007A87E4 /* CurrencyCell.swift in Sources */,
 				B4487D6723AB23F20037A21B /* CurrencyModel.swift in Sources */,
 				B4CBFB1423BD867B00D08374 /* RatesPresenter.swift in Sources */,
 				B463080A23BEB2C100988E7F /* RatesCell.swift in Sources */,
 				B4C3531D23AD7E97001EB6EF /* WebServiceCaller.swift in Sources */,
+				B405CA5023BEF47C0030FCB1 /* RatesModel.swift in Sources */,
 				B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */,
 				B4487D6923AB24270037A21B /* CurrencyPresenter.swift in Sources */,
 				B4487D6423AB22B00037A21B /* CurrencyTableViewController.swift in Sources */,
 				B4E395CE23BD588B00B3ABEA /* RatesViewController.swift in Sources */,
 				B4FF90E323AED8C100D29063 /* RealmService.swift in Sources */,
+				B405CA4E23BEF3F70030FCB1 /* RatesResponse.swift in Sources */,
 				B49340FB23A9DEE800CFAB6A /* SettingsViewController.swift in Sources */,
 				B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */,
 				B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */,

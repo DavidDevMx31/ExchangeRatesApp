@@ -65,7 +65,7 @@ class RatesViewController: UIViewController {
 extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return presenter.ratesCellArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -73,8 +73,8 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Couldn't dequeue RatesCell")
         }
         
-        let currency = RealmService.instance.realm.objects(CurrencyModel.self).filter("code = 'USD'").first!
-        cell.fillCellData(rate: 1.0, currency: currency, equivalence: 0.05678)        
+        let rateInfo = presenter.ratesCellArray[indexPath.row]
+        cell.fillCellData(rate: rateInfo.rate, currencyCode: rateInfo.currencyCode, currencyName: rateInfo.currencyName, equivalence: rateInfo.calculatedRate, baseCode: "USD")
         return cell
     }
     
@@ -88,6 +88,9 @@ extension RatesViewController: RatesProtocol {
         ratesTableView.reloadData()
     }
     
+    func showRates() {
+        self.ratesTableView.reloadData()
+    }
     func noCurrencyCatalog() {
         pushCurrenciesView()
     }
