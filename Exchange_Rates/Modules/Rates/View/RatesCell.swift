@@ -35,7 +35,7 @@ class RatesCell: UITableViewCell {
     func fillCellData(baseRate: Double, totalRate: Double, currencyCode: String, currencyName: String, baseCode: String){
         ratesLabel.text = "\(formatDouble(number: totalRate)) \(currencyCode)"
         currencyLabel.text = "\(currencyCode) - \(currencyName)"
-        equivalenceLabel.text = "1.0 \(baseCode) = \(formatDouble(number: baseRate)) \(currencyCode)"
+        equivalenceLabel.text = "1 \(baseCode) = \(formatDouble(number: baseRate)) \(currencyCode)"
     }
     
     private func formatDouble(number: Double) -> String {
