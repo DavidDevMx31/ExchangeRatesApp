@@ -94,8 +94,13 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Couldn't dequeue RatesCell")
         }
         
-        let rateInfo = presenter.ratesCellArray[indexPath.row]
-        cell.fillCellData(rate: rateInfo.rate, currencyCode: rateInfo.currencyCode, currencyName: rateInfo.currencyName, equivalence: rateInfo.calculatedRate, baseCode: "USD")
+        let currentRate = presenter.ratesCellArray[indexPath.row]
+        cell.fillCellData(baseRate: currentRate.rate,
+                          totalRate: currentRate.calculatedRate,
+                          currencyCode: currentRate.currencyCode,
+                          currencyName: currentRate.currencyName,
+                          baseCode: UserSettings.getBaseCurrencyCode())
+        
         return cell
     }
     

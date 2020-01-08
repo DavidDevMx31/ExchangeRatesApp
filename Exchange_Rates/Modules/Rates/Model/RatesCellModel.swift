@@ -12,6 +12,6 @@ struct RatesCellModel {
     var base: String
     var currencyCode: String
     var currencyName: String
-    var rate: String
-    var calculatedRate: String
+    var rate: Double
+    var calculatedRate: Double
 }

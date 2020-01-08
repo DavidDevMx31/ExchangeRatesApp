@@ -96,10 +96,13 @@ class RatesPresenter {
         let rates = RealmService.instance.realm.objects(RatesModel.self).sorted(byKeyPath: "currencyCode", ascending: true)
         let ratesArray = Array(rates)
         
+        ratesCellArray.removeAll(keepingCapacity: true)
+        
         for element in ratesArray {
             fillRatesCellModel(rates: element)
         }
         view?.showRates()
+        print("Total rates: \(ratesCellArray.count)")
     }
     
     private func parseRatesModel(rates: RatesResponse) {
@@ -112,7 +115,7 @@ class RatesPresenter {
             for rate in rates.rates {
                 let isAlternative = alternatives.contains(rate.key)
                 if let currency = RealmService.instance.realm.objects(CurrencyModel.self).filter("code = '\(rate.key)'").first {
-                    let element = RatesModel(value: ["base": "USD",
+                    let element = RatesModel(value: ["base": UserSettings.getBaseCurrencyCode(),
                                                      "currencyCode" : currency.code,
                                                      "currencyName": currency.name,
                                                      "rate": rate.value,
@@ -133,8 +136,8 @@ class RatesPresenter {
             base: rates.base,
             currencyCode: rates.currencyCode,
             currencyName: rates.currencyName,
-            rate: formatRate(rate: rates.rate),
-            calculatedRate: formatRate(rate: calculateRate(baseRate: rates.rate, amount: amount))
+            rate: rates.rate,
+            calculatedRate: calculateRate(baseRate: rates.rate, amount: amount)
         ))
     }
     
@@ -162,12 +165,14 @@ class RatesPresenter {
                                            currencyCode: rate.currencyCode,
                                            currencyName: rate.currencyName,
                                            rate: rate.rate,
-                                           calculatedRate: formatRate(rate: calculateRate(baseRate: Double(rate.rate)!,
-                                           amount: amount))))
+                                           calculatedRate: calculateRate(baseRate: rate.rate, amount: amount))
+            )
         }
         newRates.sort{ $0.currencyCode < $1.currencyCode }
+        ratesCellArray.removeAll(keepingCapacity: true)
         ratesCellArray = newRates
         view?.showRates()
+        print("Total rates: \(ratesCellArray.count)")
     }
 }
 

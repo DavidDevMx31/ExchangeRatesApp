@@ -32,9 +32,14 @@ class RatesCell: UITableViewCell {
         
     }
     
-    func fillCellData(rate: String, currencyCode: String, currencyName: String, equivalence: String, baseCode: String){
-        ratesLabel.text = "\(equivalence) \(currencyCode)"
+    func fillCellData(baseRate: Double, totalRate: Double, currencyCode: String, currencyName: String, baseCode: String){
+        ratesLabel.text = "\(formatDouble(number: totalRate)) \(currencyCode)"
         currencyLabel.text = "\(currencyCode) - \(currencyName)"
-        equivalenceLabel.text = "1 \(baseCode) = \(rate) \(currencyCode)"
+        equivalenceLabel.text = "1.0 \(baseCode) = \(formatDouble(number: baseRate)) \(currencyCode)"
+    }
+    
+    private func formatDouble(number: Double) -> String {
+        let numberOfDecimals = UserSettings.getNumberOfDecimals()
+        return String(format: "%.\(numberOfDecimals)f", number)
     }
 }
