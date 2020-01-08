@@ -46,6 +46,7 @@ class RatesViewController: UIViewController {
     func setupNavigationBar() {
         title = "Exchange rates"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshRates))
     }
     
     private func setKeyboardToolbar() {
@@ -67,6 +68,10 @@ class RatesViewController: UIViewController {
         if let settingsVC = storyboard?.instantiateViewController(identifier: "SettingsView") {
             navigationController?.pushViewController(settingsVC, animated: true)
         }
+    }
+    
+    @objc func refreshRates() {
+        presenter.refreshRatesData()
     }
     
     @IBAction func manageCurrenciesTouched(_ sender: UIButton) {

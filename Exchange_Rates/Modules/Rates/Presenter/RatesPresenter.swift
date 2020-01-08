@@ -51,6 +51,10 @@ class RatesPresenter {
         }
     }
     
+    func refreshRatesData() {
+        fetchRatesFromAPI()
+    }
+    
     private func isRatesInfoReady() -> Bool {
         let ratesExist = checkIfRatesExist()
         if !ratesExist { return false }
@@ -102,7 +106,6 @@ class RatesPresenter {
             fillRatesCellModel(rates: element)
         }
         view?.showRates()
-        print("Total rates: \(ratesCellArray.count)")
     }
     
     private func parseRatesModel(rates: RatesResponse) {
@@ -111,6 +114,7 @@ class RatesPresenter {
             let alternatives = defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
             
             var ratesArray = [RatesModel]()
+            self.ratesCellArray.removeAll(keepingCapacity: true)
             
             for rate in rates.rates {
                 let isAlternative = alternatives.contains(rate.key)
@@ -127,6 +131,7 @@ class RatesPresenter {
                 }
             }
             RealmService.instance.addArrayOfObjectsWithPK(ratesArray)
+            self.sortRatesByCurrencyCodeAscending()
             self.view?.showRates()
         }
     }
@@ -158,7 +163,7 @@ class RatesPresenter {
         }
     }
     
-    func recalculateRates() {
+    private func recalculateRates() {
         var newRates = [RatesCellModel]()
         for rate in ratesCellArray {
             newRates.append(RatesCellModel(base: rate.base,
@@ -168,11 +173,14 @@ class RatesPresenter {
                                            calculatedRate: calculateRate(baseRate: rate.rate, amount: amount))
             )
         }
-        newRates.sort{ $0.currencyCode < $1.currencyCode }
         ratesCellArray.removeAll(keepingCapacity: true)
         ratesCellArray = newRates
+        sortRatesByCurrencyCodeAscending()
         view?.showRates()
-        print("Total rates: \(ratesCellArray.count)")
+    }
+    
+    private func sortRatesByCurrencyCodeAscending() {
+        ratesCellArray.sort{ $0.currencyCode < $1.currencyCode }
     }
 }
 
