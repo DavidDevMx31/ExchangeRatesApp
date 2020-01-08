@@ -33,8 +33,8 @@ class RatesCell: UITableViewCell {
     }
     
     func fillCellData(rate: String, currencyCode: String, currencyName: String, equivalence: String, baseCode: String){
-        ratesLabel.text = "\(rate) \(currencyCode)"
+        ratesLabel.text = "\(equivalence) \(currencyCode)"
         currencyLabel.text = "\(currencyCode) - \(currencyName)"
-        equivalenceLabel.text = "1 \(baseCode) = \(equivalence) \(currencyCode)"
+        equivalenceLabel.text = "1 \(baseCode) = \(rate) \(currencyCode)"
     }
 }

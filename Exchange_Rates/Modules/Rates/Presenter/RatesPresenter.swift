@@ -9,14 +9,21 @@
 import Foundation
 
 protocol RatesProtocol {
-    func showBaseCurrencyData(code: String, name: String)
+    func fillBaseCurrencyData(code: String, name: String)
     func showRates()
     func noCurrencyCatalog()
+    func noValidAmount()
 }
 class RatesPresenter {
     
     var view: RatesProtocol?
     var ratesCellArray = [RatesCellModel]()
+    
+    private var amount = 1.0 {
+        didSet {
+            recalculateRates()
+        }
+    }
     
     func attachView(view: RatesProtocol) {
         self.view = view
@@ -26,39 +33,53 @@ class RatesPresenter {
         self.view = nil
     }
     
-    func getBaseCurrency() {
-        let _ = checkRatesExist()
-        let defaults = UserDefaults.standard
-        let baseCurrencyCode = defaults.string(forKey: CurrencyKeys.base.rawValue) ?? CurrencyConstants.defaultBaseCurrency
-        
-        if let baseCurrency = RealmService.instance.realm.objects(CurrencyModel.self).filter("code == '\(baseCurrencyCode)'").first {
-            view?.showBaseCurrencyData(code: baseCurrency.code, name: baseCurrency.name)
+    func getBaseCurrencyData() {
+        let baseCode = UserSettings.getBaseCurrencyCode()
+        if let baseCurrency = RealmService.instance.realm.objects(CurrencyModel.self).filter("code == '\(baseCode)'").first {
+            view?.fillBaseCurrencyData(code: baseCurrency.code, name: baseCurrency.name)
         } else {
             print("There are no currencies saved in Realm")
             view?.noCurrencyCatalog()
         }
     }
     
-    private func checkRatesExist() -> Bool {
-        if let _ = RealmService.instance.realm.objects(RatesModel.self).first {
-            print("Hay tipos de cambio")
+    func getRates() {
+        if isRatesInfoReady() {
             getRatesFromRealm()
-            return true
         } else {
-            print("No hay tipos de cambio")
             fetchRatesFromAPI()
-            return false
         }
     }
     
-    private func checkSameBaseCurrency() -> Bool {
-        let defaults = UserDefaults.standard
-        let _ = defaults.string(forKey: CurrencyKeys.base.rawValue) ?? CurrencyConstants.defaultBaseCurrency
+    private func isRatesInfoReady() -> Bool {
+        let ratesExist = checkIfRatesExist()
+        if !ratesExist { return false }
+        
+        let isSameBase = checkIfIsSameBase()
+        if !isSameBase { return false }
         
         return true
     }
     
+    private func checkIfRatesExist() -> Bool {
+        if let _ = RealmService.instance.realm.objects(RatesModel.self).first {
+            print("Hay tipos de cambio guardados")
+            return true
+        } else {
+            print("No hay tipos de cambio guardados.")
+            return false
+        }
+    }
+    
+    private func checkIfIsSameBase() -> Bool {
+        let baseCode = UserSettings.getBaseCurrencyCode()
+        
+        if let _ = RealmService.instance.realm.objects(RatesModel.self).filter("currencyCode = '\(baseCode)'").first { return true } else { return false }
+    }
+    
     private func fetchRatesFromAPI() {
+        print("Obteniendo tipos de cambio de la API...")
+        
         let endpoint = WebServiceEndpoints.GetAllRates
         let url = URL(string: "?app_id=\(RatesConstants.appID)&show_alternative=true",
             relativeTo: URL(string: endpoint.rawValue))
@@ -70,6 +91,8 @@ class RatesPresenter {
     }
     
     private func getRatesFromRealm() {
+        print("Obteniendo tipos de cambio locales...")
+        
         let rates = RealmService.instance.realm.objects(RatesModel.self).sorted(byKeyPath: "currencyCode", ascending: true)
         let ratesArray = Array(rates)
         
@@ -79,7 +102,7 @@ class RatesPresenter {
         view?.showRates()
     }
     
-    private func fillRates(rates: RatesResponse) {
+    private func parseRatesModel(rates: RatesResponse) {
         DispatchQueue.main.async {
             let defaults = UserDefaults.standard
             let alternatives = defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
@@ -106,14 +129,45 @@ class RatesPresenter {
     }
     
     private func fillRatesCellModel(rates: RatesModel) {
-        let defaults = UserDefaults.standard
-        var digits = defaults.integer(forKey: UserSettingsKeys.positions.rawValue)
-        
-        if digits == 0 {
-            digits = SettingsConstants.defaultDecimalPositions
+        ratesCellArray.append(RatesCellModel(
+            base: rates.base,
+            currencyCode: rates.currencyCode,
+            currencyName: rates.currencyName,
+            rate: formatRate(rate: rates.rate),
+            calculatedRate: formatRate(rate: calculateRate(baseRate: rates.rate, amount: amount))
+        ))
+    }
+    
+    private func calculateRate(baseRate: Double, amount: Double) -> Double {
+        return baseRate * amount
+    }
+    
+    private func formatRate(rate: Double) -> String {
+        let numberOfDecimals = UserSettings.getNumberOfDecimals()
+        return String(format: "%.\(numberOfDecimals)f", rate)
+    }
+    
+    func validateAmount(userAmount: String) {
+        if let number = Double(userAmount) {
+            amount = number
+        } else {
+            view?.noValidAmount()
         }
-        
-        ratesCellArray.append(RatesCellModel(base: rates.base, currencyCode: rates.currencyCode, currencyName: rates.currencyName, rate: String(format: "%.2f", rates.rate), calculatedRate: String(format: "%.2f", rates.rate)))
+    }
+    
+    func recalculateRates() {
+        var newRates = [RatesCellModel]()
+        for rate in ratesCellArray {
+            newRates.append(RatesCellModel(base: rate.base,
+                                           currencyCode: rate.currencyCode,
+                                           currencyName: rate.currencyName,
+                                           rate: rate.rate,
+                                           calculatedRate: formatRate(rate: calculateRate(baseRate: Double(rate.rate)!,
+                                           amount: amount))))
+        }
+        newRates.sort{ $0.currencyCode < $1.currencyCode }
+        ratesCellArray = newRates
+        view?.showRates()
     }
 }
 
@@ -122,7 +176,7 @@ extension RatesPresenter: WebServiceCallerProtocol {
         let decoder = JSONDecoder()
         do {
             let decoded = try decoder.decode(RatesResponse.self, from: response)
-            fillRates(rates: decoded)
+            parseRatesModel(rates: decoded)
         } catch {
             print("Failed to decode JSON")
         }

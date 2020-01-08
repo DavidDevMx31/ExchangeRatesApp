@@ -29,7 +29,7 @@ class RatesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenter.getBaseCurrency()
+        presenter.getBaseCurrencyData()
     }
     
     func setupViewController() {
@@ -38,11 +38,28 @@ class RatesViewController: UIViewController {
         amountTextField.text = "1.0"
         ratesTableView.delegate = self
         ratesTableView.dataSource = self
+        amountTextField.keyboardType = .decimalPad
+        setKeyboardToolbar()
     }
 
     func setupNavigationBar() {
         title = "Exchange rates"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
+    }
+    
+    private func setKeyboardToolbar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(amountEntered))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolBar.items = [space, doneButton]
+        self.amountTextField.inputAccessoryView = toolBar
+    }
+    
+    @objc func amountEntered() {
+        view.endEditing(true)
+        presenter.validateAmount(userAmount: amountTextField.text ?? "")
     }
     
     @objc func showSettingsView() {
@@ -53,6 +70,10 @@ class RatesViewController: UIViewController {
     
     @IBAction func manageCurrenciesTouched(_ sender: UIButton) {
         pushCurrenciesView()
+    }
+    
+    @IBAction func finishedEditing(_ sender: UITextField) {
+        print("Finished editing")
     }
     
     func pushCurrenciesView() {
@@ -82,16 +103,24 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension RatesViewController: RatesProtocol {
     
-    func showBaseCurrencyData(code: String, name: String) {
+    func fillBaseCurrencyData(code: String, name: String) {
         currencyCodeLabel.text = code
         currencyNameLabel.text = name
-        ratesTableView.reloadData()
+        
+        presenter.getRates()
     }
     
     func showRates() {
         self.ratesTableView.reloadData()
     }
+    
     func noCurrencyCatalog() {
         pushCurrenciesView()
+    }
+    
+    func noValidAmount() {
+        let ac = UIAlertController(title: "Not valid amount", message: "The amount that you typed is not a valid number", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Ok", style: .default))
+        present(ac, animated: true)
     }
 }
