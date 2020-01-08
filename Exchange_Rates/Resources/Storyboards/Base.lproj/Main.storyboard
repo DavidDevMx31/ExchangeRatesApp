@@ -41,6 +41,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
+                                            <action selector="editingBegin:" destination="zdH-Cz-wST" eventType="editingDidBegin" id="qXf-Z7-8tg"/>
                                             <action selector="finishedEditing:" destination="zdH-Cz-wST" eventType="editingDidEnd" id="pyi-s6-4eb"/>
                                         </connections>
                                     </textField>

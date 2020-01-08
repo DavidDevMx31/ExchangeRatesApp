@@ -17,7 +17,8 @@ class RatesViewController: UIViewController {
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var ratesTableView: UITableView!
     
-    var presenter: RatesPresenter!
+    private var presenter: RatesPresenter!
+    private var lastAmount = 1.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,7 @@ class RatesViewController: UIViewController {
     func setupViewController() {
         presenter = RatesPresenter()
         presenter.attachView(view: self)
-        amountTextField.text = "1.0"
+        amountTextField.text = "\(lastAmount)"
         ratesTableView.delegate = self
         ratesTableView.dataSource = self
         amountTextField.keyboardType = .decimalPad
@@ -59,7 +60,7 @@ class RatesViewController: UIViewController {
     
     @objc func amountEntered() {
         view.endEditing(true)
-        presenter.validateAmount(userAmount: amountTextField.text ?? "")
+        //presenter.validateAmount(userAmount: amountTextField.text ?? "")
     }
     
     @objc func showSettingsView() {
@@ -72,8 +73,23 @@ class RatesViewController: UIViewController {
         pushCurrenciesView()
     }
     
+    @IBAction func editingBegin(_ sender: UITextField) {
+        if let userAmount = amountTextField.text {
+            lastAmount = Double(userAmount) ?? 1.0
+        }
+        amountTextField.text = ""
+    }
+    
     @IBAction func finishedEditing(_ sender: UITextField) {
-        print("Finished editing")
+        if let userAmount = amountTextField.text {
+            if userAmount.isEmpty {
+                amountTextField.text = "\(lastAmount)"
+            } else {
+                presenter.validateAmount(userAmount: userAmount)
+            }
+        } else {
+            amountTextField.text = "\(lastAmount)"
+        }
     }
     
     func pushCurrenciesView() {
@@ -124,6 +140,7 @@ extension RatesViewController: RatesProtocol {
     }
     
     func noValidAmount() {
+        amountTextField.text = "\(lastAmount)"
         let ac = UIAlertController(title: "Not valid amount", message: "The amount that you typed is not a valid number", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
