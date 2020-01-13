@@ -110,8 +110,7 @@ class RatesPresenter {
     
     private func parseRatesModel(rates: RatesResponse) {
         DispatchQueue.main.async {
-            let defaults = UserDefaults.standard
-            let alternatives = defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
+            let alternatives = UserSettings.getAlternativesCurrencies()
             
             var ratesArray = [RatesModel]()
             self.ratesCellArray.removeAll(keepingCapacity: true)
@@ -137,6 +136,8 @@ class RatesPresenter {
     }
     
     private func fillRatesCellModel(rates: RatesModel) {
+        if !UserSettings.showAlternativeCurrencies() && rates.isAlternative { return }
+        
         ratesCellArray.append(RatesCellModel(
             base: rates.base,
             currencyCode: rates.currencyCode,
@@ -148,11 +149,6 @@ class RatesPresenter {
     
     private func calculateRate(baseRate: Double, amount: Double) -> Double {
         return baseRate * amount
-    }
-    
-    private func formatRate(rate: Double) -> String {
-        let numberOfDecimals = UserSettings.getNumberOfDecimals()
-        return String(format: "%.\(numberOfDecimals)f", rate)
     }
     
     func validateAmount(userAmount: String) {

@@ -25,4 +25,14 @@ struct UserSettings {
         
         return numberOfDecimals
     }
+    
+    static func showAlternativeCurrencies() -> Bool {
+        let defaults = UserDefaults.standard
+        return defaults.bool(forKey: UserSettingsKeys.showAlternative.rawValue) 
+    }
+    
+    static func getAlternativesCurrencies() -> [String] {
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
+    }
 }
