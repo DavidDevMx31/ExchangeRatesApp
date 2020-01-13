@@ -73,7 +73,7 @@ class CurrencyTableViewController: UITableViewController {
                 completionHandler(true)
             }
             setBaseCurrencyAction.backgroundColor = .blue
-            actions.append(setBaseCurrencyAction)
+            //actions.append(setBaseCurrencyAction)
         }
         
         let configuration = UISwipeActionsConfiguration(actions: actions)
