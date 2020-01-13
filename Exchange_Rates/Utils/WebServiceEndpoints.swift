@@ -11,4 +11,5 @@ import Foundation
 enum WebServiceEndpoints: String {
     case GetAllCurrencies = "https://openexchangerates.org/api/currencies.json?show_alternative=true"
     case GetAlternativeCurrencies = "https://openexchangerates.org/api/currencies.json?only_alternative=true"
+    case GetAllRates = "https://openexchangerates.org/api/latest.json"
 }
