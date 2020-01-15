@@ -45,7 +45,8 @@ class RatesViewController: UIViewController {
 
     func setupNavigationBar() {
         title = "Exchange rates"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(showSettingsView))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshRates))
     }
     
@@ -61,7 +62,6 @@ class RatesViewController: UIViewController {
     
     @objc func amountEntered() {
         view.endEditing(true)
-        //presenter.validateAmount(userAmount: amountTextField.text ?? "")
     }
     
     @objc func showSettingsView() {
@@ -116,7 +116,6 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.fullRatesArray.section[section].rows.count
-        //return presenter.ratesCellArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,7 +124,6 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         let currentRate = presenter.fullRatesArray.section[indexPath.section].rows[indexPath.row]
-        //let currentRate = presenter.ratesCellArray[indexPath.row]
         cell.fillCellData(baseRate: currentRate.rate,
                           totalRate: currentRate.calculatedRate,
                           currencyCode: currentRate.currencyCode,
@@ -161,3 +159,5 @@ extension RatesViewController: RatesProtocol {
         present(ac, animated: true)
     }
 }
+
+// <a target="_blank" href="https://iconos8.es/icons/set/settings">Settings</a>, <a target="_blank" href="https://iconos8.es/icons/set/coins">Coins</a> and other icons by <a target="_blank" href="https://iconos8.es">Icons8</a>
