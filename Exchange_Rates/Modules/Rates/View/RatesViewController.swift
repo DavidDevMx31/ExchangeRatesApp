@@ -106,8 +106,17 @@ class RatesViewController: UIViewController {
 
 extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return presenter.fullRatesArray.section[section].sectionName
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.ratesCellArray.count
+        return presenter.fullRatesArray.section[section].rows.count
+        //return presenter.ratesCellArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,7 +124,8 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Couldn't dequeue RatesCell")
         }
         
-        let currentRate = presenter.ratesCellArray[indexPath.row]
+        let currentRate = presenter.fullRatesArray.section[indexPath.section].rows[indexPath.row]
+        //let currentRate = presenter.ratesCellArray[indexPath.row]
         cell.fillCellData(baseRate: currentRate.rate,
                           totalRate: currentRate.calculatedRate,
                           currencyCode: currentRate.currencyCode,

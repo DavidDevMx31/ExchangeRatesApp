@@ -35,4 +35,9 @@ struct UserSettings {
         let defaults = UserDefaults.standard
         return defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
     }
+    
+    static func getFavoriteCurrencies() -> [String] {
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
+    }
 }

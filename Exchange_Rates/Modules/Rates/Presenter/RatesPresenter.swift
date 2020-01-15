@@ -17,7 +17,7 @@ protocol RatesProtocol {
 class RatesPresenter {
     
     var view: RatesProtocol?
-    var ratesCellArray = [RatesCellModel]()
+    var fullRatesArray = RatesTableViewModel(section: [RatesSectionModel]())
     
     private var amount = 1.0 {
         didSet {
@@ -100,20 +100,21 @@ class RatesPresenter {
         let rates = RealmService.instance.realm.objects(RatesModel.self).sorted(byKeyPath: "currencyCode", ascending: true)
         let ratesArray = Array(rates)
         
-        ratesCellArray.removeAll(keepingCapacity: true)
+        var ratesCellModel = [RatesCellModel]()
         
         for element in ratesArray {
-            fillRatesCellModel(rates: element)
+            ratesCellModel.append(parseRatesToCellModel(rates: element))
         }
-        view?.showRates()
+        fillTableViewModel(rates: ratesCellModel)
+        //view?.showRates()
     }
     
-    private func parseRatesModel(rates: RatesResponse) {
-        DispatchQueue.main.async {
+    private func parseRatesResponse(rates: RatesResponse) {
+        DispatchQueue.main.async { [weak self] in
             let alternatives = UserSettings.getAlternativesCurrencies()
             
             var ratesArray = [RatesModel]()
-            self.ratesCellArray.removeAll(keepingCapacity: true)
+            //var ratesCellArray = [RatesCellModel]()
             
             for rate in rates.rates {
                 let isAlternative = alternatives.contains(rate.key)
@@ -124,27 +125,46 @@ class RatesPresenter {
                                                      "rate": rate.value,
                                                      "isAlternative": isAlternative])
                     ratesArray.append(element)
-                    self.fillRatesCellModel(rates: element)
                 } else {
                     print("No se encontró información para la moneda con código \(rate.key)")
                 }
             }
             RealmService.instance.addArrayOfObjectsWithPK(ratesArray)
-            self.sortRatesByCurrencyCodeAscending()
-            self.view?.showRates()
+            self?.getRatesFromRealm()
         }
     }
     
-    private func fillRatesCellModel(rates: RatesModel) {
-        if !UserSettings.showAlternativeCurrencies() && rates.isAlternative { return }
+    private func fillTableViewModel(rates: [RatesCellModel]) {
+        fullRatesArray.section.removeAll(keepingCapacity: true)
+        fullRatesArray.section.append(RatesSectionModel(sectionName: "Favorites", rows: [RatesCellModel]()))
+        fullRatesArray.section.append(RatesSectionModel(sectionName: "All", rows: [RatesCellModel]()))
         
-        ratesCellArray.append(RatesCellModel(
+        let favorites = UserSettings.getFavoriteCurrencies()
+        
+        if favorites.count == 0 {
+            print("No hay monedas favoritas")
+            fullRatesArray.section[1].rows.append(contentsOf: rates)
+        } else {
+            for rate in rates {
+                if favorites.contains(rate.currencyCode) {
+                    fullRatesArray.section[0].rows.append(rate)
+                } else {
+                    fullRatesArray.section[1].rows.append(rate)
+                }
+            }
+        }
+        
+        self.view?.showRates()
+    }
+    
+    private func parseRatesToCellModel(rates: RatesModel) -> RatesCellModel {
+         return RatesCellModel(
             base: rates.base,
             currencyCode: rates.currencyCode,
             currencyName: rates.currencyName,
             rate: rates.rate,
             calculatedRate: calculateRate(baseRate: rates.rate, amount: amount)
-        ))
+        )
     }
     
     private func calculateRate(baseRate: Double, amount: Double) -> Double {
@@ -160,23 +180,25 @@ class RatesPresenter {
     }
     
     private func recalculateRates() {
-        var newRates = [RatesCellModel]()
-        for rate in ratesCellArray {
-            newRates.append(RatesCellModel(base: rate.base,
-                                           currencyCode: rate.currencyCode,
-                                           currencyName: rate.currencyName,
-                                           rate: rate.rate,
-                                           calculatedRate: calculateRate(baseRate: rate.rate, amount: amount))
-            )
+        var newValues = [RatesCellModel]()
+        
+        for index in 0..<fullRatesArray.section.count {
+            
+            for row in 0..<fullRatesArray.section[index].rows.count {
+                let baseRate = fullRatesArray.section[index].rows[row]
+                newValues.append(RatesCellModel(base: baseRate.base,
+                                               currencyCode: baseRate.currencyCode,
+                                               currencyName: baseRate.currencyName,
+                                               rate: baseRate.rate,
+                                               calculatedRate: calculateRate(baseRate: baseRate.rate, amount: amount))
+                )
+            }
+            
+            fullRatesArray.section[index].rows.removeAll(keepingCapacity: true)
+            fullRatesArray.section[index].rows.append(contentsOf: newValues)
+            newValues.removeAll()
         }
-        ratesCellArray.removeAll(keepingCapacity: true)
-        ratesCellArray = newRates
-        sortRatesByCurrencyCodeAscending()
         view?.showRates()
-    }
-    
-    private func sortRatesByCurrencyCodeAscending() {
-        ratesCellArray.sort{ $0.currencyCode < $1.currencyCode }
     }
 }
 
@@ -185,7 +207,7 @@ extension RatesPresenter: WebServiceCallerProtocol {
         let decoder = JSONDecoder()
         do {
             let decoded = try decoder.decode(RatesResponse.self, from: response)
-            parseRatesModel(rates: decoded)
+            parseRatesResponse(rates: decoded)
         } catch {
             print("Failed to decode JSON")
         }
