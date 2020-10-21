@@ -110,7 +110,7 @@ class CurrencyPresenter {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request, webService: endpoint)
+        ws.executeRequest(request, to: endpoint)
     }
     
     private func fetchAlternativeCurrenciesFromAPI() {
@@ -121,7 +121,7 @@ class CurrencyPresenter {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request, webService: endpoint)
+        ws.executeRequest(request, to: endpoint)
     }
     
     private func saveCurrencies(currencies: [CurrencyModel]) {

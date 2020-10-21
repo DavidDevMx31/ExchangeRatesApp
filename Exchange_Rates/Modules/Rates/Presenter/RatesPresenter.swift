@@ -91,7 +91,7 @@ class RatesPresenter {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         print(url!.absoluteString)
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request, webService: endpoint)
+        ws.executeRequest(request, to: endpoint)
     }
     
     private func getRatesFromRealm() {
