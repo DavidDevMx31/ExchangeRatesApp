@@ -22,7 +22,7 @@ class RealmService {
                 realm.add(model)
             }
         } catch  {
-            print("addObject Error: \(error)")
+            print("An error ocurred in RealmService.addObject. Error description: \(error.localizedDescription)")
         }
     }
     
@@ -34,7 +34,7 @@ class RealmService {
                 }
             }
         } catch {
-            print("addArrayOfObjects Error: \(error)")
+            print("An error ocurred in RealmService.addArrayOfObjects. Error description: \(error.localizedDescription)")
         }
     }
     
@@ -46,7 +46,7 @@ class RealmService {
                 }
             }
         } catch  {
-            print("updateRealmObject Error: \(error)")
+            print("An error ocurred in RealmService.updateRealmObject. Error description: \(error.localizedDescription)")
         }
     }
     
@@ -56,7 +56,7 @@ class RealmService {
                 realm.add(model, update: .modified)
             }
         } catch {
-            print("updateRealmObjectByPK Error: \(error)")
+            print("An error ocurred in RealmService.updateRealmObjectByPK Error description: \(error.localizedDescription)")
         }
     }
     
@@ -66,12 +66,8 @@ class RealmService {
                 realm.delete(model)
             }
         } catch {
-            print("deleteRealmObject Error: \(error)")
+            print("An error ocurred in RealmService.deleteRealmObject Error description: \(error.localizedDescription)")
         }
-    }
-    
-    func writeRealmPath(){
-        print("Path: \(realm.configuration.fileURL!)")
     }
     
     func deleteAll() {
@@ -80,7 +76,11 @@ class RealmService {
                 realm.deleteAll()
             }
         } catch {
-            print("deleteAll Error: \(error)")
+            print("deleteAll Error: \(error.localizedDescription)")
         }
+    }
+    
+    func writeRealmPath(){
+        print("Current Realm path: \(realm.configuration.fileURL!)")
     }
 }
