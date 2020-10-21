@@ -13,6 +13,8 @@ class CurrencyTableViewController: UITableViewController {
     var presenter: CurrencyPresenter!
     var searchController: UISearchController!
     
+    private let cellIdentifier = "CurrencyCell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +33,29 @@ class CurrencyTableViewController: UITableViewController {
         
         presenter.detachView()
     }
+    
+    func setupViewController() {
+        title = "Currency List"
+        presenter = CurrencyPresenter()
+        presenter.attachView(view: self)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCurrencies))
+    }
+    
+    func setupSearchBar() {
+        /*
+         Initializing with searchResultsController set to nil means that searchController will use this view controller
+         to display the search results
+         */
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Enter the currency code or name"
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        searchController.searchBar.sizeToFit()
+        tableView.tableHeaderView = searchController.searchBar
+        
+        definesPresentationContext = true
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -41,65 +66,35 @@ class CurrencyTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyCell", for: indexPath) as? CurrencyCell {
-            let currency = presenter.currencies[indexPath.row]
-            cell.fillCellData(name: "\(currency.code) - \(currency.name)",
-                isBase: presenter.checkIfIsBaseCurrency(currencyCode: currency.code),
-                isFavorite: presenter.checkIfIsFavoriteCurrency(currencyCode: currency.code))
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CurrencyCell else {
+            fatalError("Could not dequeue cell with name \(cellIdentifier)")
         }
-        fatalError("Error cargarndo la celda CurrencyCell")
+        
+        let currency = presenter.currencies[indexPath.row]
+        let currencyFullName = (currency.code) + " - " + currency.name
+        let isBaseCurrency = presenter.checkIfIsBaseCurrency(currencyCode: currency.code)
+        let isFavoriteCurrency = presenter.checkIfIsFavoriteCurrency(currencyCode: currency.code)
+        
+        cell.fillCellData(name: currencyFullName, isBase: isBaseCurrency, isFavorite: isFavoriteCurrency)
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var actions = [UIContextualAction]()
         let currencyCode = presenter.currencies[indexPath.row].code
-        let isFavorite = presenter.checkIfIsFavoriteCurrency(currencyCode: currencyCode)
-        let isBase = presenter.checkIfIsBaseCurrency(currencyCode: currencyCode)
+        let isFavoriteCurrency = presenter.checkIfIsFavoriteCurrency(currencyCode: currencyCode)
         
-        let title = isFavorite ? "Unmark as Favorite" : "Mark as Favorite"
-        let favoriteAction = UIContextualAction(style: .normal, title: title) { (action, view, completionHandler) in
-            self.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
-            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        let actionTitle = isFavoriteCurrency ? "Unmark as Favorite" : "Mark as Favorite"
+        let markAsFavorite = UIContextualAction(style: .normal, title: actionTitle) { [weak self] (action, view, completionHandler) in
+            self?.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
+            self?.tableView.reloadRows(at: [indexPath], with: .fade)
             completionHandler(true)
         }
-        favoriteAction.backgroundColor = isFavorite ? UIColor.red : UIColor.green
-        actions.append(favoriteAction)
-        
-        if !isBase {
-            let setBaseCurrencyAction = UIContextualAction(style: .normal, title: "Set as base") { (action, view, completionHandler) in
-                self.presenter.setBaseCurrency(currencyCode: currencyCode)
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-                completionHandler(true)
-            }
-            setBaseCurrencyAction.backgroundColor = .blue
-            //actions.append(setBaseCurrencyAction)
-        }
-        
+        markAsFavorite.backgroundColor = isFavoriteCurrency ? UIColor.red : UIColor.green
+        actions.append(markAsFavorite)
+
         let configuration = UISwipeActionsConfiguration(actions: actions)
         return configuration
-    }
-    
-    func setupViewController() {
-        title = "Currency List"
-        presenter = CurrencyPresenter()
-        presenter.attachView(view: self)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshCurrencies))
-    }
-    
-    func setupSearchBar() {
-        // Initializing with searchResultsController set to nil means that
-        // searchController will use this view controller to display the search results
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Enter the currency code or name"
-        searchController.obscuresBackgroundDuringPresentation = false
-        
-        searchController.searchBar.sizeToFit()
-        tableView.tableHeaderView = searchController.searchBar
-        
-        definesPresentationContext = true
     }
     
     @objc func refreshCurrencies() {
@@ -116,7 +111,6 @@ extension CurrencyTableViewController: CurrencyProtocol {
     func showError(errorMessage: String) {
         let ac = UIAlertController(title: "Something happened!", message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Got it!", style: .default))
-            
         self.present(ac, animated: true)
     }
 }
