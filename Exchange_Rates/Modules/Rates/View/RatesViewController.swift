@@ -46,7 +46,6 @@ class RatesViewController: UIViewController {
     func setupNavigationBar() {
         title = "Exchange rates"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(showSettingsView))
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshRates))
     }
     
@@ -111,11 +110,17 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return presenter.fullRatesArray.section[section].sectionName
+        if presenter.fullRatesArray.section.count > 0 {
+            return presenter.fullRatesArray.section[section].sectionName
+        }
+        return ""
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.fullRatesArray.section[section].rows.count
+        if presenter.fullRatesArray.section.count > 0 {
+            return presenter.fullRatesArray.section[section].rows.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
