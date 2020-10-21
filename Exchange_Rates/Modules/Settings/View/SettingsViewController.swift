@@ -57,7 +57,7 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: SettingsProtocol {
     
-    func setUserDefaults(defaults: SettingsModel) {
+    func showUserSettings(defaults: SettingsModel) {
         decimalPositions = defaults.decimalPositions
         decimalPositionStepper.value = Double(decimalPositions)
         
