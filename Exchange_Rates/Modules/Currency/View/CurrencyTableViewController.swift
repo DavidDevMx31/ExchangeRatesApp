@@ -25,7 +25,7 @@ class CurrencyTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presenter.getCurrencies()
+        presenter.loadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,7 +86,7 @@ class CurrencyTableViewController: UITableViewController {
         
         let actionTitle = isFavoriteCurrency ? "Unmark as Favorite" : "Mark as Favorite"
         let markAsFavorite = UIContextualAction(style: .normal, title: actionTitle) { [weak self] (action, view, completionHandler) in
-            self?.presenter.markOrUnmarkFavoriteBy(currencyCode: currencyCode)
+            self?.presenter.manageFavoriteCurrency(currencyCode: currencyCode)
             self?.tableView.reloadRows(at: [indexPath], with: .fade)
             completionHandler(true)
         }

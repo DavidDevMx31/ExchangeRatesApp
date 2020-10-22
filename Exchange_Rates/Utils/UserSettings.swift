@@ -36,4 +36,16 @@ struct UserSettings {
     static func getFavoriteCurrencies() -> [String] {
         return defaults.object(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
     }
+    
+    static func saveBaseCurrencyCode(_ code: String) {
+        defaults.set(code, forKey: CurrencyKeys.base.rawValue)
+    }
+    
+    static func saveFavoriteCurrencies(_ currencies: [String]) {
+        defaults.set(currencies, forKey: CurrencyKeys.favorites.rawValue)
+    }
+    
+    static func saveAlternativeCurrencies(_ currencies: [String]) {
+        defaults.set(currencies, forKey: CurrencyKeys.alternative.rawValue)
+    }
 }
