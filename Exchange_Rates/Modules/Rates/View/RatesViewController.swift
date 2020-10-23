@@ -10,7 +10,6 @@ import UIKit
 
 class RatesViewController: UIViewController {
 
-    @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var currencyNameLabel: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
     
@@ -143,8 +142,7 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
 extension RatesViewController: RatesProtocol {
     
     func fillBaseCurrencyData(code: String, name: String) {
-        currencyCodeLabel.text = code
-        currencyNameLabel.text = name
+        currencyNameLabel.text = "Base currency: \(code) - \(name)"
         presenter.getRates()
     }
     
