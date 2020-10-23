@@ -145,7 +145,6 @@ extension RatesViewController: RatesProtocol {
     func fillBaseCurrencyData(code: String, name: String) {
         currencyCodeLabel.text = code
         currencyNameLabel.text = name
-        
         presenter.getRates()
     }
     
@@ -157,7 +156,7 @@ extension RatesViewController: RatesProtocol {
         pushCurrenciesView()
     }
     
-    func noValidAmount() {
+    func enteredInvalidAmount() {
         amountTextField.text = "\(lastAmount)"
         let ac = UIAlertController(title: "Not valid amount", message: "The amount that you typed is not a valid number", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
