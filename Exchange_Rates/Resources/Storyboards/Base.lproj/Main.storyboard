@@ -230,13 +230,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show alternative currencies:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uSE-Jp-MlV">
-                                <rect key="frame" x="20" y="213" width="215" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reduce data usage:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="266-O6-DpD">
-                                <rect key="frame" x="20" y="162" width="151" height="21"/>
+                                <rect key="frame" x="20" y="158" width="215" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -253,11 +247,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mxs-Ub-5Ap">
-                                <rect key="frame" x="322.5" y="157" width="51" height="31"/>
-                            </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="XYh-Y6-YBg">
-                                <rect key="frame" x="322.5" y="208" width="51" height="31"/>
+                                <rect key="frame" x="322.5" y="153" width="51" height="31"/>
                             </switch>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="mIQ-Id-nhE">
                                 <rect key="frame" x="300" y="105" width="94" height="32"/>
@@ -269,29 +260,23 @@
                         <viewLayoutGuide key="safeArea" id="m50-g7-ce1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="XYh-Y6-YBg" firstAttribute="top" secondItem="mIQ-Id-nhE" secondAttribute="bottom" constant="16" id="0i0-qL-5sq"/>
                             <constraint firstItem="XYh-Y6-YBg" firstAttribute="centerY" secondItem="uSE-Jp-MlV" secondAttribute="centerY" id="11J-f9-g6h"/>
                             <constraint firstItem="mIQ-Id-nhE" firstAttribute="top" secondItem="MoN-Oo-UTu" secondAttribute="bottom" constant="20" id="1cU-D2-s9y"/>
                             <constraint firstItem="uSE-Jp-MlV" firstAttribute="leading" secondItem="m50-g7-ce1" secondAttribute="leading" constant="20" id="2Kc-7Z-Lxp"/>
                             <constraint firstItem="m50-g7-ce1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MoN-Oo-UTu" secondAttribute="trailing" constant="20" id="9R9-8I-CsH"/>
                             <constraint firstItem="MIR-AZ-E4b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m50-g7-ce1" secondAttribute="leading" constant="20" id="EIG-pG-KLK"/>
-                            <constraint firstItem="266-O6-DpD" firstAttribute="leading" secondItem="m50-g7-ce1" secondAttribute="leading" constant="20" id="GTP-ep-YwA"/>
                             <constraint firstItem="mIQ-Id-nhE" firstAttribute="centerY" secondItem="MIR-AZ-E4b" secondAttribute="centerY" id="Ghu-yv-hrc"/>
-                            <constraint firstItem="mxs-Ub-5Ap" firstAttribute="centerX" secondItem="mIQ-Id-nhE" secondAttribute="centerX" id="JkX-iC-lBg"/>
                             <constraint firstItem="MoN-Oo-UTu" firstAttribute="leading" secondItem="m50-g7-ce1" secondAttribute="leading" constant="20" id="Kts-VC-DZO"/>
-                            <constraint firstItem="mxs-Ub-5Ap" firstAttribute="centerY" secondItem="266-O6-DpD" secondAttribute="centerY" id="MDY-2A-53f"/>
                             <constraint firstItem="m50-g7-ce1" firstAttribute="trailing" secondItem="mIQ-Id-nhE" secondAttribute="trailing" constant="20" id="NIu-RH-xJg"/>
-                            <constraint firstItem="XYh-Y6-YBg" firstAttribute="centerX" secondItem="mxs-Ub-5Ap" secondAttribute="centerX" id="eF0-ld-7tq"/>
                             <constraint firstItem="MoN-Oo-UTu" firstAttribute="top" secondItem="m50-g7-ce1" secondAttribute="top" constant="20" id="hG5-sF-6jx"/>
                             <constraint firstItem="mIQ-Id-nhE" firstAttribute="leading" secondItem="MIR-AZ-E4b" secondAttribute="trailing" constant="25" id="jRm-kS-wMY"/>
-                            <constraint firstItem="XYh-Y6-YBg" firstAttribute="top" secondItem="mxs-Ub-5Ap" secondAttribute="bottom" constant="20" id="kUm-Sx-iEw"/>
-                            <constraint firstItem="mxs-Ub-5Ap" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="266-O6-DpD" secondAttribute="trailing" constant="25" id="lCl-ul-sI4"/>
+                            <constraint firstItem="XYh-Y6-YBg" firstAttribute="centerX" secondItem="mIQ-Id-nhE" secondAttribute="centerX" id="mkx-dB-Bx1"/>
                             <constraint firstItem="XYh-Y6-YBg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uSE-Jp-MlV" secondAttribute="trailing" constant="25" id="oW9-Al-mri"/>
-                            <constraint firstItem="mxs-Ub-5Ap" firstAttribute="top" secondItem="mIQ-Id-nhE" secondAttribute="bottom" constant="20" id="tW0-L4-UZY"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="alternativeCurrencySwitch" destination="XYh-Y6-YBg" id="tPV-La-7al"/>
-                        <outlet property="dataUsageSwitch" destination="mxs-Ub-5Ap" id="ZL6-qH-Moq"/>
                         <outlet property="decimalPositionLabel" destination="MIR-AZ-E4b" id="hfs-hg-6dE"/>
                         <outlet property="decimalPositionStepper" destination="mIQ-Id-nhE" id="Ggf-wQ-lQd"/>
                     </connections>
