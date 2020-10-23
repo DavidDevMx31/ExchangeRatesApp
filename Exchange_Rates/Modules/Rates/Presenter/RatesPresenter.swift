@@ -193,6 +193,7 @@ extension RatesPresenter: WebServiceCallerProtocol {
         let decoder = JSONDecoder()
         do {
             let decoded = try decoder.decode(RatesResponse.self, from: response)
+            UserSettings.saveRatesUpdateDate()
             parseRatesResponse(rates: decoded)
         } catch {
             print("Failed to decode JSON")

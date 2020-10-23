@@ -48,4 +48,14 @@ struct UserSettings {
     static func saveAlternativeCurrencies(_ currencies: [String]) {
         defaults.set(currencies, forKey: CurrencyKeys.alternative.rawValue)
     }
+    
+    static func saveRatesUpdateDate() {
+        let currentDate = Date()
+        defaults.set(currentDate, forKey: CurrencyKeys.updateDate.rawValue)
+    }
+    
+    static func getRatesLastUpdateDate() -> Date {
+        let date = defaults.object(forKey: CurrencyKeys.updateDate.rawValue) as? Date ?? Date()
+        return date
+    }
 }

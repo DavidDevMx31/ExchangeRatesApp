@@ -147,6 +147,10 @@ extension RatesViewController: RatesProtocol {
     }
     
     func showRates() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let lastupdated = UserSettings.getRatesLastUpdateDate()
+        lastUpdateLabel.text = "Last update: \(dateFormatter.string(from: lastupdated))"
         self.ratesTableView.reloadData()
     }
     

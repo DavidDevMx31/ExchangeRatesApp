@@ -22,6 +22,7 @@ enum CurrencyKeys: String {
     case favorites = "favoriteCurrencies"
     case alternative = "alternativeCurrencies"
     case base = "baseCurrencyCode"
+    case updateDate = "lastUpdate"
 }
 
 struct CurrencyConstants {
