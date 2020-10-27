@@ -13,6 +13,7 @@ protocol RatesProtocol {
     func showRates()
     func noCurrencyCatalog()
     func enteredInvalidAmount()
+    func showError(message: String)
 }
 class RatesPresenter {
     
@@ -197,10 +198,14 @@ extension RatesPresenter: WebServiceCallerProtocol {
             parseRatesResponse(rates: decoded)
         } catch {
             print("Failed to decode JSON")
+            view?.showError(message: "Failed to decode server response. Try again later.")
         }
     }
     
     func didReceiveError(error: Error?, errorMessage: String?, webService: WebServiceEndpoints?) {
         print(errorMessage ?? "didReceiveError")
+        DispatchQueue.main.async {
+            self.view?.showError(message: errorMessage ?? "Unknown error")
+        }
     }
 }

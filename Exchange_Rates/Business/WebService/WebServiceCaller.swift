@@ -35,7 +35,12 @@ class WebServiceCaller {
             
             //Código HTTP
             if !(200...299).contains(httpResponse.statusCode) {
-                self.delegate?.didReceiveError(error: nil, errorMessage: "The server responded with a status of \(httpResponse.statusCode)", webService: endpoint)
+                if let responseData = data {
+                    let message = self.decodeAPIError(data: responseData)
+                    self.delegate?.didReceiveError(error: nil, errorMessage: message, webService: endpoint)
+                } else {
+                    self.delegate?.didReceiveError(error: nil, errorMessage: "The server responded with a status of \(httpResponse.statusCode)", webService: endpoint)
+                }
                 return
             }
     
@@ -46,4 +51,14 @@ class WebServiceCaller {
         task.resume()
     }
 
+    private func decodeAPIError(data: Data) -> String {
+        let jsonDecoder = JSONDecoder()
+        do {
+            let decoded = try jsonDecoder.decode(APIErrorModel.self, from: data)
+            return "Code: \(decoded.message).\n Description: \(decoded.description)"
+        } catch {
+            return "Unknown error"
+        }
+        
+    }
 }

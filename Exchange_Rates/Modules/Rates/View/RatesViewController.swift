@@ -164,6 +164,12 @@ extension RatesViewController: RatesProtocol {
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
     }
+    
+    func showError(message: String) {
+        let ac = UIAlertController(title: "Something happened", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Got it", style: .default))
+        present(ac, animated: true)
+    }
 }
 
 // <a target="_blank" href="https://iconos8.es/icons/set/settings">Settings</a>, <a target="_blank" href="https://iconos8.es/icons/set/coins">Coins</a> and other icons by <a target="_blank" href="https://iconos8.es">Icons8</a>
