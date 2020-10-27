@@ -10,7 +10,6 @@ import Foundation
 
 enum UserSettingsKeys: String {
     case positions = "DecimalPositions"
-    case saveDataMode = "SaveDataMode"
     case showAlternative = "ShowAlternative"
 }
 
@@ -30,5 +29,5 @@ struct CurrencyConstants {
 }
 
 struct RatesConstants {
-    static let appID = "eaecbc4ee81748379bc11d1b99199009"
+    static let appID = "your-app-id"
 }
