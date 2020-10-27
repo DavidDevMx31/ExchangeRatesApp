@@ -17,8 +17,10 @@
 		B4487D6423AB22B00037A21B /* CurrencyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D6323AB22B00037A21B /* CurrencyTableViewController.swift */; };
 		B4487D6723AB23F20037A21B /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D6623AB23F20037A21B /* CurrencyModel.swift */; };
 		B4487D6923AB24270037A21B /* CurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4487D6823AB24270037A21B /* CurrencyPresenter.swift */; };
+		B45A6C0F23CEA6DD00BD54E7 /* RatesTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45A6C0E23CEA6DD00BD54E7 /* RatesTableViewModel.swift */; };
 		B463080A23BEB2C100988E7F /* RatesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B463080923BEB2C100988E7F /* RatesCell.swift */; };
 		B470507523C14EB600DBA0B9 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B470507423C14EB600DBA0B9 /* UserSettings.swift */; };
+		B4718C312548CD1100F13E9E /* APIErrorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4718C302548CD1100F13E9E /* APIErrorModel.swift */; };
 		B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49340D923A9DD2C00CFAB6A /* AppDelegate.swift */; };
 		B49340DC23A9DD2C00CFAB6A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49340DB23A9DD2C00CFAB6A /* SceneDelegate.swift */; };
 		B49340E123A9DD2C00CFAB6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49340DF23A9DD2C00CFAB6A /* Main.storyboard */; };
@@ -47,8 +49,10 @@
 		B4487D6323AB22B00037A21B /* CurrencyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewController.swift; sourceTree = "<group>"; };
 		B4487D6623AB23F20037A21B /* CurrencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModel.swift; sourceTree = "<group>"; };
 		B4487D6823AB24270037A21B /* CurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPresenter.swift; sourceTree = "<group>"; };
+		B45A6C0E23CEA6DD00BD54E7 /* RatesTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesTableViewModel.swift; sourceTree = "<group>"; };
 		B463080923BEB2C100988E7F /* RatesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesCell.swift; sourceTree = "<group>"; };
 		B470507423C14EB600DBA0B9 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		B4718C302548CD1100F13E9E /* APIErrorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorModel.swift; sourceTree = "<group>"; };
 		B49340D623A9DD2C00CFAB6A /* Exchange_Rates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exchange_Rates.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B49340D923A9DD2C00CFAB6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B49340DB23A9DD2C00CFAB6A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				B405CA4D23BEF3F70030FCB1 /* RatesResponse.swift */,
 				B405CA4F23BEF47C0030FCB1 /* RatesModel.swift */,
 				B4CA740823C028110099F6C1 /* RatesCellModel.swift */,
+				B45A6C0E23CEA6DD00BD54E7 /* RatesTableViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 			children = (
 				B4C3531C23AD7E97001EB6EF /* WebServiceCaller.swift */,
 				B4C3531E23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift */,
+				B4718C302548CD1100F13E9E /* APIErrorModel.swift */,
 			);
 			path = WebService;
 			sourceTree = "<group>";
@@ -334,7 +340,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "David Mendoza";
 				TargetAttributes = {
 					B49340D523A9DD2C00CFAB6A = {
@@ -421,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4487D5C23AB19BE0037A21B /* SettingsModel.swift in Sources */,
+				B45A6C0F23CEA6DD00BD54E7 /* RatesTableViewModel.swift in Sources */,
 				B49340DA23A9DD2C00CFAB6A /* AppDelegate.swift in Sources */,
 				B4C3531F23AD7EF4001EB6EF /* WebServiceCallerProtocol.swift in Sources */,
 				B4CA740923C028110099F6C1 /* RatesCellModel.swift in Sources */,
@@ -440,6 +447,7 @@
 				B405CA4E23BEF3F70030FCB1 /* RatesResponse.swift in Sources */,
 				B49340FB23A9DEE800CFAB6A /* SettingsViewController.swift in Sources */,
 				B4487D6223AB1F9E0037A21B /* SettingsConstants.swift in Sources */,
+				B4718C312548CD1100F13E9E /* APIErrorModel.swift in Sources */,
 				B4487D5E23AB1A590037A21B /* SettingsPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,6 +500,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -552,6 +561,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

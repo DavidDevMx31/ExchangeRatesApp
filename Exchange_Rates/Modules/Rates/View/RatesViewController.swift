@@ -10,7 +10,6 @@ import UIKit
 
 class RatesViewController: UIViewController {
 
-    @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var currencyNameLabel: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
     
@@ -45,7 +44,7 @@ class RatesViewController: UIViewController {
 
     func setupNavigationBar() {
         title = "Exchange rates"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(showSettingsView))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(showSettingsView))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refreshRates))
     }
     
@@ -61,7 +60,6 @@ class RatesViewController: UIViewController {
     
     @objc func amountEntered() {
         view.endEditing(true)
-        //presenter.validateAmount(userAmount: amountTextField.text ?? "")
     }
     
     @objc func showSettingsView() {
@@ -106,8 +104,22 @@ class RatesViewController: UIViewController {
 
 extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if presenter.fullRatesArray.section.count > 0 {
+            return presenter.fullRatesArray.section[section].sectionName
+        }
+        return ""
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.ratesCellArray.count
+        if presenter.fullRatesArray.section.count > 0 {
+            return presenter.fullRatesArray.section[section].rows.count
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,7 +127,7 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError("Couldn't dequeue RatesCell")
         }
         
-        let currentRate = presenter.ratesCellArray[indexPath.row]
+        let currentRate = presenter.fullRatesArray.section[indexPath.section].rows[indexPath.row]
         cell.fillCellData(baseRate: currentRate.rate,
                           totalRate: currentRate.calculatedRate,
                           currencyCode: currentRate.currencyCode,
@@ -130,13 +142,16 @@ extension RatesViewController: UITableViewDelegate, UITableViewDataSource {
 extension RatesViewController: RatesProtocol {
     
     func fillBaseCurrencyData(code: String, name: String) {
-        currencyCodeLabel.text = code
-        currencyNameLabel.text = name
-        
+        currencyNameLabel.text = "Base currency: \(code) - \(name)"
         presenter.getRates()
     }
     
     func showRates() {
+        if let lastupdated = UserSettings.getRatesLastUpdateDate() {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
+            lastUpdateLabel.text = "Last update: \(dateFormatter.string(from: lastupdated))"
+        }
         self.ratesTableView.reloadData()
     }
     
@@ -144,10 +159,18 @@ extension RatesViewController: RatesProtocol {
         pushCurrenciesView()
     }
     
-    func noValidAmount() {
+    func enteredInvalidAmount() {
         amountTextField.text = "\(lastAmount)"
         let ac = UIAlertController(title: "Not valid amount", message: "The amount that you typed is not a valid number", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Ok", style: .default))
         present(ac, animated: true)
     }
+    
+    func showError(message: String) {
+        let ac = UIAlertController(title: "Something happened", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Got it", style: .default))
+        present(ac, animated: true)
+    }
 }
+
+// <a target="_blank" href="https://iconos8.es/icons/set/settings">Settings</a>, <a target="_blank" href="https://iconos8.es/icons/set/coins">Coins</a> and other icons by <a target="_blank" href="https://iconos8.es">Icons8</a>

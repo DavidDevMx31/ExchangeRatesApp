@@ -9,14 +9,13 @@
 import Foundation
 
 struct UserSettings {
+    private static let defaults = UserDefaults.standard
     
     static func getBaseCurrencyCode() -> String {
-        let defaults = UserDefaults.standard
         return defaults.string(forKey: CurrencyKeys.base.rawValue) ?? CurrencyConstants.defaultBaseCurrency
     }
     
     static func getNumberOfDecimals() -> Int {
-        let defaults = UserDefaults.standard
         let numberOfDecimals = defaults.integer(forKey: UserSettingsKeys.positions.rawValue)
         
         if numberOfDecimals == 0 {
@@ -27,12 +26,36 @@ struct UserSettings {
     }
     
     static func showAlternativeCurrencies() -> Bool {
-        let defaults = UserDefaults.standard
         return defaults.bool(forKey: UserSettingsKeys.showAlternative.rawValue) 
     }
     
     static func getAlternativesCurrencies() -> [String] {
-        let defaults = UserDefaults.standard
         return defaults.object(forKey: CurrencyKeys.alternative.rawValue) as? [String] ?? [String]()
+    }
+    
+    static func getFavoriteCurrencies() -> [String] {
+        return defaults.object(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
+    }
+    
+    static func saveBaseCurrencyCode(_ code: String) {
+        defaults.set(code, forKey: CurrencyKeys.base.rawValue)
+    }
+    
+    static func saveFavoriteCurrencies(_ currencies: [String]) {
+        defaults.set(currencies, forKey: CurrencyKeys.favorites.rawValue)
+    }
+    
+    static func saveAlternativeCurrencies(_ currencies: [String]) {
+        defaults.set(currencies, forKey: CurrencyKeys.alternative.rawValue)
+    }
+    
+    static func saveRatesUpdateDate() {
+        let currentDate = Date()
+        defaults.set(currentDate, forKey: CurrencyKeys.updateDate.rawValue)
+    }
+    
+    static func getRatesLastUpdateDate() -> Date? {
+        let date = defaults.object(forKey: CurrencyKeys.updateDate.rawValue) as? Date ?? nil
+        return date
     }
 }

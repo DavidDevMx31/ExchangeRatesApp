@@ -12,11 +12,10 @@ class CurrencyCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var baseLabel: UILabel!
-    @IBOutlet weak var favoriteLabel: UILabel!
+    @IBOutlet weak var favoriteImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     required init?(coder: NSCoder) {
@@ -31,11 +30,18 @@ class CurrencyCell: UITableViewCell {
     func fillCellData(name: String, isBase: Bool, isFavorite: Bool){
         nameLabel.text = name
         baseLabel.isHidden = !isBase
-        favoriteLabel.isHidden = !isFavorite
+        favoriteImage.isHidden = !isFavorite
     }
     
     func setupView() {
         baseLabel.textColor = .blue
-        favoriteLabel.textColor = .green
+        favoriteImage.image = UIImage(systemName: "star.fill")
+        favoriteImage.tintColor = .yellow
+        
+        favoriteImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            favoriteImage.widthAnchor.constraint(equalTo: favoriteImage.heightAnchor)
+        ])
     }
 }

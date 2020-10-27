@@ -12,7 +12,6 @@ class SettingsViewController: UIViewController {
 
     @IBOutlet weak var decimalPositionStepper: UIStepper!
     @IBOutlet weak var decimalPositionLabel: UILabel!
-    @IBOutlet weak var dataUsageSwitch: UISwitch!
     @IBOutlet weak var alternativeCurrencySwitch: UISwitch!
     
     private var presenter: SettingsPresenter!
@@ -40,7 +39,7 @@ class SettingsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        presenter.saveSettings(decimalPositions: decimalPositions, saveData: dataUsageSwitch.isOn, showAlternativeCurrencies: alternativeCurrencySwitch.isOn)
+        presenter.saveSettings(decimalPositions: decimalPositions, showAlternativeCurrencies: alternativeCurrencySwitch.isOn)
     }
     
     func setupControls() {
@@ -57,11 +56,9 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: SettingsProtocol {
     
-    func setUserDefaults(defaults: SettingsModel) {
+    func showUserSettings(defaults: SettingsModel) {
         decimalPositions = defaults.decimalPositions
         decimalPositionStepper.value = Double(decimalPositions)
-        
-        dataUsageSwitch.isOn = defaults.saveData
         alternativeCurrencySwitch.isOn = defaults.showAlternativeCurrencies
     }
     

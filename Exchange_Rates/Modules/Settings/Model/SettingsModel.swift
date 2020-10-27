@@ -10,6 +10,5 @@ import Foundation
 
 struct SettingsModel {
     var decimalPositions: Int
-    var saveData: Bool
     var showAlternativeCurrencies: Bool
 }

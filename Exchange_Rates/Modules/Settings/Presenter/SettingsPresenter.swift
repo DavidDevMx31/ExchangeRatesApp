@@ -9,7 +9,7 @@
 import Foundation
 
 protocol SettingsProtocol {
-    func setUserDefaults(defaults: SettingsModel)
+    func showUserSettings(defaults: SettingsModel)
 }
 
 struct SettingsPresenter {
@@ -19,10 +19,9 @@ struct SettingsPresenter {
         self.view = view
     }
     
-    func saveSettings(decimalPositions: Int, saveData: Bool, showAlternativeCurrencies: Bool) {
+    func saveSettings(decimalPositions: Int, showAlternativeCurrencies: Bool) {
         let defaults = UserDefaults.standard
         defaults.set(decimalPositions, forKey: UserSettingsKeys.positions.rawValue)
-        defaults.set(saveData, forKey: UserSettingsKeys.saveDataMode.rawValue)
         defaults.set(showAlternativeCurrencies, forKey: UserSettingsKeys.showAlternative.rawValue)
     }
     
@@ -30,15 +29,14 @@ struct SettingsPresenter {
         let defaults = UserDefaults.standard
         
         var positions = defaults.integer(forKey: UserSettingsKeys.positions.rawValue)
-        let saveDataMode = defaults.bool(forKey: UserSettingsKeys.saveDataMode.rawValue)
         let showAlternative = defaults.bool(forKey: UserSettingsKeys.showAlternative.rawValue)
         
         if positions == 0 {
             positions = SettingsConstants.defaultDecimalPositions
         }
         
-        let settings = SettingsModel(decimalPositions: positions, saveData: saveDataMode, showAlternativeCurrencies: showAlternative)
+        let settings = SettingsModel(decimalPositions: positions, showAlternativeCurrencies: showAlternative)
         
-        view?.setUserDefaults(defaults: settings)
+        view?.showUserSettings(defaults: settings)
     }
 }

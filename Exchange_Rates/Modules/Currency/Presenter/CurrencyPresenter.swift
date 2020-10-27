@@ -32,9 +32,22 @@ class CurrencyPresenter {
         self.view = nil
     }
     
-    func getCurrencies() {
+    func loadData() {
         getUserBaseCurrency()
         getUserFavoriteCurrencies()
+        getCurrencies()
+    }
+    
+    private func getUserBaseCurrency() {
+        self.baseCurrencyCode = UserSettings.getBaseCurrencyCode()
+        print("Moneda base del usuario: \(baseCurrencyCode)")
+    }
+    
+    private func getUserFavoriteCurrencies() {
+        self.favoriteCurrencies = UserSettings.getFavoriteCurrencies()
+    }
+    
+    func getCurrencies() {
         getCurrenciesFromRealm()
         
         if currencies.count == 0 {
@@ -48,80 +61,54 @@ class CurrencyPresenter {
         fetchAlternativeCurrenciesFromAPI()
     }
     
-    func filterCurrenciesBy(currencyCode: String) {
-        let userFilter = currencyCode.uppercased()
-        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(userFilter)' OR name CONTAINS '\(userFilter)'").sorted(byKeyPath: "code", ascending: true)
-        currencies = Array(filteredCurrencies)
-    }
-    
     func checkIfIsFavoriteCurrency(currencyCode: String) -> Bool {
-        if favoriteCurrencies.contains(currencyCode) {
-            return true
-        }
-        return false
+        return favoriteCurrencies.contains(currencyCode)
     }
     
-    func markOrUnmarkFavoriteBy(currencyCode: String) {
+    func checkIfIsBaseCurrency(currencyCode: String) -> Bool {
+        return baseCurrencyCode == currencyCode
+    }
+    
+    func manageFavoriteCurrency(currencyCode: String) {
         if let index = favoriteCurrencies.firstIndex(of: currencyCode) {
             favoriteCurrencies.remove(at: index)
         } else {
             favoriteCurrencies.append(currencyCode)
         }
-        
         saveUserFavoriteCurrencies()
     }
     
-    func checkIfIsBaseCurrency(currencyCode: String) -> Bool {
-        if baseCurrencyCode == currencyCode {
-            return true
-        }
-        
-        return false
+    private func saveUserFavoriteCurrencies() {
+        UserSettings.saveFavoriteCurrencies(self.favoriteCurrencies)
     }
     
-    func setBaseCurrency(currencyCode: String) {
-        baseCurrencyCode = currencyCode
-        DispatchQueue.global().async {
-            print("Guardando moneda base: \(currencyCode)")
-            let defaults = UserDefaults.standard
-            defaults.set(currencyCode, forKey: CurrencyKeys.base.rawValue)
-        }
-    }
-    
-    private func getUserFavoriteCurrencies() {
-        if favoriteCurrencies.count != 0 { return }
-        
-        DispatchQueue.global().async { [weak self] in
-            let defaults = UserDefaults.standard
-            self?.favoriteCurrencies = defaults.array(forKey: CurrencyKeys.favorites.rawValue) as? [String] ?? [String]()
-        }
-    }
-    
-    private func getCurrenciesFromRealm() {
-        let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
-        currencies = Array(savedCurrencies)
-    }
+    //MARK: API calls
     
     private func fetchAllCurrenciesFromAPI() {
-        print("Obteniendo todas las monedas")
         let endpoint = WebServiceEndpoints.GetAllCurrencies
         let url = URL(string: endpoint.rawValue)
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request, webService: endpoint)
+        ws.executeRequest(request, to: endpoint)
     }
     
     private func fetchAlternativeCurrenciesFromAPI() {
-        print("Obteniendo las monedas alternativas")
         let endpoint = WebServiceEndpoints.GetAlternativeCurrencies
         let url = URL(string: endpoint.rawValue)
         var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let ws = WebServiceCaller(delegate: self)
-        ws.executeRequest(request: request, webService: endpoint)
+        ws.executeRequest(request, to: endpoint)
+    }
+    
+    //MARK: Realm
+    
+    private func getCurrenciesFromRealm() {
+        let savedCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).sorted(byKeyPath: "code", ascending: true)
+        currencies = Array(savedCurrencies)
     }
     
     private func saveCurrencies(currencies: [CurrencyModel]) {
@@ -131,16 +118,17 @@ class CurrencyPresenter {
         }
     }
     
-    private func saveUserFavoriteCurrencies() {
-        self.saveArrayToDefaults(dataArray: self.favoriteCurrencies, keyName: CurrencyKeys.favorites.rawValue)
+    func filterCurrenciesBy(currencyCode: String) {
+        let userFilter = currencyCode.uppercased()
+        let filteredCurrencies = RealmService.instance.realm.objects(CurrencyModel.self).filter("code CONTAINS '\(userFilter)' OR name CONTAINS '\(userFilter)'").sorted(byKeyPath: "code", ascending: true)
+        currencies = Array(filteredCurrencies)
     }
     
+    //MARK: Fill data models
     private func fillAllCurrencies(data: [String: String]) {
         var allCurrencies = [CurrencyModel]()
         for element in data {
-            let currency = CurrencyModel(value: ["code": element.key,
-                                                 "name": element.value,
-                                                 "isAlternative": false])
+            let currency = CurrencyModel(value: ["code": element.key, "name": element.value, "isAlternative": false])
             allCurrencies.append(currency)
         }
         self.saveCurrencies(currencies: allCurrencies)
@@ -151,27 +139,7 @@ class CurrencyPresenter {
         for currency in data {
             alternativeCurrencies.append(currency.key)
         }
-        saveArrayToDefaults(dataArray: alternativeCurrencies, keyName: CurrencyKeys.alternative.rawValue)
-    }
-    
-    private func saveArrayToDefaults(dataArray: [String], keyName: String) {
-        DispatchQueue.global().async {
-            //print("Guardando datos de: \(keyName)")
-            let defaults = UserDefaults.standard
-            defaults.set(dataArray, forKey: keyName)
-        }
-    }
-    
-    private func getUserBaseCurrency() {
-        if baseCurrencyCode != "" { return }
-        DispatchQueue.global().async {
-            print("Obteniendo moneda base")
-            let defaults = UserDefaults.standard
-            if let baseCode = defaults.string(forKey: CurrencyKeys.base.rawValue) {
-                self.baseCurrencyCode = baseCode
-                print("Base usuario: \(baseCode)")
-            }
-        }
+        UserSettings.saveAlternativeCurrencies(alternativeCurrencies)
     }
 }
 
